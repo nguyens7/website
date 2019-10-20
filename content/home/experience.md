@@ -33,10 +33,10 @@ date_format = "Jan 2006"
   """
 
 [[experience]]
-  title = "Professor"
-  company = "University X"
+  title = "PhD Candidate"
+  company = "Michigan State University"
   company_url = ""
-  location = "California"
+  location = "East Lansing, Michigan"
   date_start = "2016-01-01"
   date_end = "2016-12-31"
   description = """Taught electronic engineering and researched semiconductor physics."""

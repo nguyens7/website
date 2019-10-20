@@ -21,31 +21,52 @@ date_format = "Jan 2006"
 [[item]]
   organization = "Coursera"
   organization_url = "https://www.coursera.org"
-  title = "Neural Networks and Deep Learning"
-  url = ""
-  certificate_url = "https://www.coursera.org"
-  date_start = "2018-10-01"
+  title = "Specialization in Data Engineering, Big Data, and Machine Learning on Google Cloud Platform"
+  url = "https://www.coursera.org"
+  certificate_url = "https://www.coursera.org/account/accomplishments/specialization/certificate/FHX8JR5QMT55?utm_medium=certificate&utm_source=link&utm_campaign=copybutton_certificate"
+  date_start = "2019-09-24"
   date_end = ""
   description = ""
-
-[[item]]
-  organization = "edX"
-  organization_url = "https://www.edx.org"
-  title = "Blockchain Fundamentals"
-  url = "https://www.edx.org/professional-certificate/uc-berkeleyx-blockchain-fundamentals"
-  certificate_url = "https://www.edx.org"
-  date_start = "2018-03-01"
-  date_end = ""
-  description = "Formulated informed blockchain models, hypotheses, and use cases."
   
-[[item]]
-  organization = "DataCamp"
-  organization_url = "https://www.datacamp.com"
-  title = "Object-Oriented Programming in R: S3 and R6 Course"
-  url = ""
-  certificate_url = "https://www.datacamp.com"
-  date_start = "2017-07-01"
-  date_end = "2017-12-21"
-  description = ""
+# [[item]]
+#   organization = "Coursera"
+#   organization_url = "https://www.coursera.org"
+#   title = "Building Resilient Streaming Systems on Google Cloud Platform"
+#   url = "https://www.coursera.org"
+#   certificate_url = "https://www.coursera.org/account/accomplishments/certificate/6TXJTC2CLTHN?utm_medium=certificate&utm_source=link&utm_campaign=copybutton_certificate"
+#   date_start = "2019-09-23"
+#   date_end = ""
+#   description = ""
+#   
+# [[item]]
+#   organization = "Coursera"
+#   organization_url = "https://www.coursera.org"
+#   title = "Severless Machine Learning with Tensorflow on Google Cloud Platform"
+#   url = "https://www.coursera.org"
+#   certificate_url = "https://www.coursera.org/account/accomplishments/certificate/ZXPQSE8LY7BF?utm_medium=certificate&utm_source=link&utm_campaign=copybutton_certificate"
+#   date_start = "2019-05-24"
+#   date_end = ""
+#   description = ""
+#   
+# [[item]]
+#   organization = "Coursera"
+#   organization_url = "https://www.coursera.org"
+#   title = "Leveraging Unstructured Data with Cloud Dataproc on Google Cloud Platform"
+#   url = "https://www.coursera.org"
+#   certificate_url = "https://www.coursera.org/account/accomplishments/certificate/2587ZRS7QG3L?utm_medium=certificate&utm_source=link&utm_campaign=copybutton_certificate"
+#   date_start = "2019-05-13"
+#   date_end = ""
+#   description = ""
+# 
+# [[item]]
+#   organization = "Coursera"
+#   organization_url = "https://www.coursera.org"
+#   title = "Google Cloud Platform Big Data and Machine Learning Fundamentals"
+#   url = "https://www.coursera.org"
+#   certificate_url = "https://www.coursera.org/account/accomplishments/certificate/EBQAXPZCGE96?utm_medium=certificate&utm_source=link&utm_campaign=copybutton_certificate"
+#   date_start = "2019-05-06"
+#   date_end = ""
+#   description = ""
+
 
 +++
