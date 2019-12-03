@@ -26,8 +26,8 @@ date_format = "Jan 2006"
   date_end = "2016-07-01"
   description = """
   
-  * Coursework in clincal trial study & design and quantitative analysis
-  * Presented at the Centre for Trophoblast Research and International Conference
+  * Coursework in Bioinformatics, Clinical Trial Study & Design, Quantitative Analysis
+  * Presented at the Centre for Trophoblast Research and International Research Conference
   """
 
 [[experience]]
@@ -39,8 +39,8 @@ date_format = "Jan 2006"
   date_end = "2017-10-31"
   description = """
   
-  * Evaluated inventions for licensing and commericializaiton potentital
-  * Created and presented invention screening reports to Executive Board
+  * Evaluated
+  * Created 
   
   """
 
@@ -59,12 +59,29 @@ date_format = "Jan 2006"
 
 
 [[experience]]
-  title = "Broadening Experiences in Scientific Training (BEST) Scholar"
+  title = "Data Scientist, MSU BEST"
   company = "Michigan State University"
   company_url = "http://best.msu.edu/"
   location = "East Lansing, Michigan"
   date_start = "2016-10-01"
   date_end = ""
-  description = """* Developed and taught a 4-part Intro to R programming workshop series"""
+  description = """
+  * Broadening Experiences in Scientific Training (BEST) program
+  
+  """
+
+[[experience]]
+  title = "Graduate Research Assitant"
+  company = "Michigan State University"
+  company_url = "http://cmb.msu.edu/"
+  location = "East Lansing, Michigan"
+  date_start = "2013-08-01"
+  date_end = ""
+  description = """
+  * 
+  
+  """
+
+
 
 +++

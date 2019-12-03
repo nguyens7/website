@@ -32,6 +32,11 @@ subtitle = ""
   name = "Statistics"
   description = ""  
 
+[[feature]]
+  icon = "python"
+  icon_pack = "fab"
+  name = "Python"
+  description = ""
 
 [[feature]]
   icon = "r-project"
@@ -39,16 +44,11 @@ subtitle = ""
   name = "R"
   description = ""
 
-[[feature]]
-  icon = "python"
-  icon_pack = "fab"
-  name = "python"
-  description = ""
 
 [[feature]]
-  icon = "camera-retro"
-  icon_pack = "fas"
-  name = "Photography"
+  icon = "swift"
+  icon_pack = "fab"
+  name = "Swift"
   description = ""
 
 +++
