@@ -17,7 +17,24 @@ date_format = "Jan 2006"
 #   Required fields are `title`, `company`, and `date_start`.
 #   Leave `date_end` empty if it's your current employer.
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
+
 [[experience]]
+  title = "Graduate Research Assitant"
+  company = "Michigan State University"
+  company_url = "http://cmb.msu.edu/"
+  location = "East Lansing, Michigan"
+  date_start = "2013-08-01"
+  date_end = ""
+  description = """
+  * 
+  
+  """
+
+
+
+
+[[experience]]
+
   title = "Visiting Scholar"
   company = "The University of Cambridge"
   company_url = "https://www.cam.ac.uk/"
@@ -70,17 +87,6 @@ date_format = "Jan 2006"
   
   """
 
-[[experience]]
-  title = "Graduate Research Assitant"
-  company = "Michigan State University"
-  company_url = "http://cmb.msu.edu/"
-  location = "East Lansing, Michigan"
-  date_start = "2013-08-01"
-  date_end = ""
-  description = """
-  * 
-  
-  """
 
 
 
