@@ -31,7 +31,7 @@ education:
   - course: PhD in Cell and Molecular Biology & Environmental Toxicology
     institution: Michigan State University
     year: 2020
-  - course: BSc in Biological Sciences
+  - course: BSc in Biological Sciences & Psychology
     institution: The University of Michigan-Dearborn
     year: 2012
 
