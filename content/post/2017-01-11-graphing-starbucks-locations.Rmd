@@ -3,11 +3,11 @@ title: Graphing Starbucks Locations
 author: Sean Nguyen
 date: '2017-01-11'
 slug: graphing-starbucks-locations
-categories: []
+categories:
+  - R
+  - VIsualization
 tags:
   - Starbucks
-  - Visualization
-  - R
   - Leaflet
 subtitle: ''
 summary: ''

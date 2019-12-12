@@ -1,0 +1,139 @@
+---
+title: The World's Most Powerful Rocket
+author: Sean Nguyen
+date: '2018-02-09'
+slug: the-world-s-most-powerful-rocket
+categories:
+  - R
+  - VIsualization
+tags:
+  - SpaceX
+  - rvest
+  - Scraping
+  - Tidyverse
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2019-12-12T00:09:52-05:00'
+featured: yes
+
+header:
+  image: "headers/fheavy_header.jpg"
+  caption: "Image credit: [**SpaceX**](https://spacex.com/)"
+  focal_point: ''
+  preview_only: yes
+projects: []
+---
+## For Now...  
+
+
+
+![](https://i.imgur.com/AgP1Q6s.jpg) 
+
+SpaceX launched Falcon Heavy this week and I remembered how Elon Musk noted that it would have twice the thrust of any rocket currently in existence.  I was intrigued by this statement and decided to look further and compare the thrusts of other rockets of the past and rockets that are planned in the future.  
+
+```{r echo=FALSE, warning=FALSE}
+blogdown::shortcode('tweet', '726651603906785285')
+```
+
+
+First, I used the [rvest](https://github.com/hadley/rvest) package to scrape the data then get the information in a dataframe using the tidyverse.   Next I used stringr to clean up the strings in the dataframe and  plotted it using ggplot (tidyverse) as well as cowplot and RColorBrewer to improve the look of the plot.
+
+```{r message=FALSE, warning=FALSE}
+library(rvest)
+library(stringr)
+library(cowplot)
+library(tidyverse)
+library(RColorBrewer)
+theme_set(theme_cowplot())
+```
+
+One of the first steps is to find a website that has the information of interest, in my case I found an article on CNN.com and then I used the [selector gadget](http://selectorgadget.com/) tool to determine the correct xpath to get the information I wanted.  Since the information I wanted wasn't in a table format I had a rather long xpath.
+
+```{r}
+site <- read_html("http://money.cnn.com/2018/02/06/technology/future/biggest-rockets-falcon-heavy-comparison/index.html")
+
+data <- '//p[(((count(preceding-sibling::*) + 1) = 67) and parent::*)] | 
+        //p[(((count(preceding-sibling::*) + 1) = 66) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 65) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 64) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 59) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 60) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 58) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 57) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 51) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 50) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 49) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 48) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 43) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 42) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 41) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 40) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 35) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 34) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 33) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 32) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 26) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 25) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 24) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 23) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 17) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 16) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 15) and parent::*)] |
+        //p[(((count(preceding-sibling::*) + 1) = 14) and parent::*)] |
+        //*[contains(concat( " ", @class, " " ), concat( " ", "inStoryHeading", " " ))]'
+```
+
+Next I used rvest to read scrape the information extract the text and make it into a tibble. The tibble wasn't in the proper format so I had to do some data wrangling to tidy it up so I used mutate to create another column so I could extract out the rocket names and make another dataframe and then perform a join with the original dataset.
+
+```{r}
+table <- site %>% 
+  html_nodes(xpath = data) %>% 
+  html_text() %>% 
+  tibble() %>% 
+  mutate(ID = seq(1,5,1) %>% rep(7) %>% as.factor())
+table
+```
+
+After the rocket names were isolated I needed to repeat them multiple times to match with the 'table' dataframe.
+```{r}
+names <- table %>%
+  filter(ID == 1) %>% 
+  slice(rep(1:7, each=4)) # Repeats each row  4 times
+names
+```
+
+The next step is to combine the 'names' dataframe with the original 'table' and then clean up the column names using rename.  One of the trickiest parts of data wrangling is string manipulations and regular expressions (regex) which can be hard to grasp at first.  Typically when you scrape data, you'll inevitably get more information than you want or need so we can use regex to extract the specific information that we want.  In this case, I used str_replace_all to find a specific pattern and replace it with nothing so I just have the infromation that I want (numerical values in my case).
+```{r}
+df <- table %>%
+  filter(!ID == 1) %>% 
+  bind_cols(names) %>%
+  rename(Data = ".", Rocket = ".1") %>% 
+  separate(Data , into = c("Feature","Value"), sep =":") %>% 
+  select(Rocket, Feature, Value) %>% 
+  mutate(Value = str_replace_all(Value, "\\s*\\([^\\)]+\\)|[:alpha:]|\\s*",""), # regex
+         Feature = str_trim(Feature))
+df
+```
+
+Now that we have a tidy dataframe we can graph it by filtering the liftoff thrust data and then changing the Value column type to numeric and make sure we reorder the Rockets by value with the fct_reorder function.  I manually specified the y axis scale and added the YlOrRd pallette to exentuate the thrust of the various rockets. 
+```{r fig.height=5, fig.width=8, message=FALSE, warning=FALSE}
+thrust_plot <- df %>% 
+  filter(Feature == "Liftoff thrust") %>% 
+  mutate(Value = Value %>% as.numeric(),
+         Rocket = fct_reorder(Rocket,Value)) %>% 
+  ggplot(aes(x = Rocket, y = Value, fill = Rocket )) +
+  geom_col()+
+  coord_flip() +
+  scale_y_continuous(expand= c(0,0), limits = c(0,12),breaks = seq(0,12,2))+
+  guides(fill = FALSE) +
+  scale_fill_brewer(palette="YlOrRd") + 
+  labs(title = "Rocket Thrust",
+       x = "",
+       y = "Thrust (Millions of pounds)")
+
+thrust_plot
+```
+We can see that Falcon Heavy may very well be the *currently* world's most powerful rocket but we see that the decommissioned Saturn V, Space Shuttle had more thrust and the soon to be built Space Launch System will have the most thrust by far.  Although Falcon Heavy isn't the most poweful rocket of all time it is definitely one of the coolest, just take a look at the booster rockets landing simultaneously after launch!
+  
+![Falcon Heavy Booster Landing](https://media.giphy.com/media/3ohs4gSs3V0Q7qOtKU/giphy.gif)  
