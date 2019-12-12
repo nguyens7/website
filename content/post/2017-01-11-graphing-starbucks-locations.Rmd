@@ -1,0 +1,83 @@
+---
+title: Graphing Starbucks Locations
+author: Sean Nguyen
+date: '2017-01-11'
+slug: graphing-starbucks-locations
+categories: []
+tags:
+  - Starbucks
+  - Visualization
+  - R
+  - Leaflet
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2019-12-11T22:56:39-05:00'
+featured: yes
+view: 1
+
+header: 
+  image: '/headers/coffee_beans.jpg'
+  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/TD4DBagg2wE)'
+---
+## Welcome to my R tutorial series
+
+This is where I'll be posting tutorials on how to use R and Rstudio to create some amazing graphics and visualizations.  If you are completely new to R, don't worry, I will post guides to explain how to start form scratch. This post assumes you have R and Rstudio installed and know how to install packages. For this tutorial you will need to download tidyverse, RCurl, and leaflet which you can do in the bottom right panel of Rstudio by clicking the install panel.
+
+### Starbucks locations in the US
+
+This was created in [Rstudio](https://www.rstudio.com/products/RStudio/) using the [leaflet package](https://rstudio.github.io/leaflet/) , the data was obtained from a .csv (comma separated values) containing store location information from all Starbucks in the US.
+
+I got inspired by [compciv.org](http://www.compciv.org/practicum/web-making/most-isolated-starbucks/) which posted a tutorial on how to map out Starbucks locations in the US and calculate the distance to the closest store.  I wanted to recreate a similar map in R and it turns out that you with very little code thanks to the leaflet package.
+
+**1. Load tidyverse, RCurl and leaflet**
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
+library(tidyverse)
+library(RCurl)
+library(leaflet)
+```
+
+**tidyverse-** one of the best packages for data science, it includes everything you need to import, tidy and graph data  
+**RCurl-** allows you to pull data from websites like csv files  
+
+**leaflet-** is the package that allows you to make powerful maps without having to know javacript
+
+**2. Import online csv**
+
+```{r message=FALSE, warning=FALSE}
+starbucks_data <- getURL("http://www.compciv.org/files/datadumps/practicum/us-starbucks-distant.csv")
+
+starbucks <- read_csv(starbucks_data)
+head(starbucks)
+```
+
+**3. Create a map using leaflet and Starbucks Longitude and Latitude data**
+```{r message=FALSE, warning=FALSE}
+map <- leaflet() %>%
+  addTiles() %>%
+  addMarkers(starbucks$Longitude,
+  starbucks$Latitude,
+  popup=starbucks$Name,
+  clusterOptions = markerClusterOptions())
+
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+map <- leaflet() %>%
+  addTiles() %>%
+  addMarkers(starbucks$Longitude,
+  starbucks$Latitude,
+  popup=starbucks$Name,
+  clusterOptions = markerClusterOptions())
+
+map
+```
+
+**leaflet-** blank canvas map  
+
+**addMarkers-** creates the actual points on the map from the starbucks.csv  
+
+**popup-** specifies what information the popup should have  
+
+**clusterOptions-** creates the dynamic clustering for when you zoome and pan around the webapp  
