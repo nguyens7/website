@@ -42,7 +42,7 @@ library(viridis)
 library(here)</code></pre>
 <p>First I used the here package to tell R that I wanted to read in my file that was located in the ‘data’ folder. The nice thing about <strong>here()</strong> is that is automatically defaults to the root R project folder so as long as you have the project folder it doesn’t matter where you place the folder on your computer, the file will still be accessible since <strong>here()</strong> takes care of it for you.</p>
 <p>The next step was reading in the file with <strong>read_delim()</strong> with the delim = “;”. I then used rename to change column names and used <strong>mutate()</strong> extensively to create new columns from existing data. I used a couple tricks to get the columns that I wanted like <strong>str_replace()</strong> to remove “%” from the sleep_quality column. I also used <strong>ifelse()</strong> and <strong>grepl()</strong> to create a column of Weekend Weekday to tease apart differences in days of the week. After mutate I used <strong>select()</strong> to pick the columns I wanted. <strong>mutate_at()</strong> is one of my favorite functions to convert multiple columns to a different data type in R. After that I was able to have a clean dataset that was ready for exploratory data analysis!</p>
-<pre class="r"><code>file &lt;- here(&quot;data/sleepdata.csv&quot;)
+<pre class="r"><code>file &lt;- here(&quot;data_files/sleepdata.csv&quot;)
 
 df &lt;- read_delim(file, delim = &quot;;&quot;) %&gt;% 
   rename(sleep_quality = `Sleep quality`,

@@ -47,7 +47,7 @@ The next step was reading in the file with **read_delim()** with the delim = ";"
 
 ```{r message=FALSE, warning=FALSE, paged.print=TRUE}
 
-file <- here("data/sleepdata.csv")
+file <- here("data_files/sleepdata.csv")
 
 df <- read_delim(file, delim = ";") %>% 
   rename(sleep_quality = `Sleep quality`,
