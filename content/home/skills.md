@@ -15,12 +15,6 @@ subtitle = ""
 # For available icons, see: https://sourcethemes.com/academic/docs/widgets/#icons
 
 
-[[feature]]
-  icon = "salesforce"
-  icon_pack = "fab"
-  name = "Salesforce"
-  description = ""  
-
 
 [[feature]]
   icon = "database"
@@ -29,9 +23,15 @@ subtitle = ""
   description = ""  
 
 [[feature]]
+  icon = "flask"
+  icon_pack = "fas"
+  name = "Experimentation"
+  description = ""  
+
+[[feature]]
   icon = "chart-bar"
   icon_pack = "fas"
-  name = "Data Visualization"
+  name = "Visualization"
   description = "" 
   
 
