@@ -19,15 +19,13 @@ date_format = "Jan 2006"
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
 [[experience]]
-  title = "Graduate Research Assitant"
+  title = "Graduate Research Assistant"
   company = "Michigan State University"
   company_url = "http://cmb.msu.edu/"
   location = "East Lansing, Michigan"
   date_start = "2013-08-01"
   date_end = ""
   description = """
-  * 
-  
   """
 
 
@@ -42,9 +40,6 @@ date_format = "Jan 2006"
   date_start = "2016-06-01"
   date_end = "2016-07-01"
   description = """
-  
-  * Coursework in Bioinformatics, Clinical Trial Study & Design, Quantitative Analysis
-  * Presented at the Centre for Trophoblast Research and International Research Conference
   """
 
 [[experience]]
@@ -55,23 +50,16 @@ date_format = "Jan 2006"
   date_start = "2017-05-01"
   date_end = "2017-10-31"
   description = """
-  
-  * Evaluated
-  * Created 
-  
   """
 
 [[experience]]
-  title = "Programming Instructor/Research Lab Facilitor"
+  title = "Programming Instructor/Research Lab Facilitator"
   company = "The University of Chicago/Marine Biological Laboratory"
   company_url = "https://fir.mbl.edu/"
   location = "Woods Hole, Massachusetts"
   date_start = "2016-06-01"
   date_end = ""
   description = """
-  * Created and instructed a bioinformatics programming workshop
-  * Desgined and facilitated an immunology lab for Frontier in Reproduction course
-  
   """
 
 
@@ -83,8 +71,6 @@ date_format = "Jan 2006"
   date_start = "2016-10-01"
   date_end = ""
   description = """
-  * Broadening Experiences in Scientific Training (BEST) program
-  
   """
 
 
