@@ -1,0 +1,226 @@
+---
+title: Presidential Chicken
+author: Sean Nguyen
+date: '2018-10-05'
+slug: presidential-chicken
+categories:
+  - R
+  - Shiny
+tags:
+  - Shiny
+  - Scraping
+  - MSU
+  - Food
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2019-12-13T00:21:54-05:00'
+featured: no
+
+header:
+  image: "headers/eatatstate_wordcloud.png"
+  caption: "Wordcloud of top menu items at MSU dining halls from 10/5/18 - 10/15/18"
+  focal_point: ''
+  preview_only: yes
+projects: []
+---
+
+
+I remember back in undergrad when I visited my friends at Michigan State and they took me to the residential dining hall since they had a meal plan. The cafeteria had typical dorm food like salad bar, burgers, hot dogs, fries etc.  Fortunately, the  dining halls have improved drastically since then and now the undergraduate students have it great with so many options available to them.  
+
+# Eat at State 
+
+A common theme in the lab is to ask one another what do you have for lunch today?  Sometimes we don't bring anything and our options are to go to the international center food court, the restaurants on Grand River or the residential dining halls.  MSU employees have a great option to buy admission into the dining hall at a discounted rate so I always tag along with them so they can swipe me in.  We typically preview the menus at [eatatstate.msu.edu](https://eatatstate.msu.edu/) and will choose to go to the dining hall one with the best menu.    One of my favorite dishes from the cafeteria is Presidential Chicken which is a chicken dish with an alfredo like sauce with vegetables and is wrapped up in puff pastry envelope.  It tastes great and is exponentially better than the food I've had at weddings.  We haven't seen the dish on the menu in well over a year so I decided to see if I could scrape the menus and make a quick shiny dashboard to figure out the next time they would serve it. 
+
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
+library(rvest)
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+library(lubridate)
+```
+
+# Generate urls
+The key to generating a list of URLs for scraping is to identify the patterns of interest and stick them together using the `paste()` function.  Here I used the main eatatstate domain and simply created an object for each dining hall.  Then I can use the paste function to link them together so then I have URLs for each dining hall.  Then I generated a sequence of dates and appended it to the dining hall URLs.
+```{r}
+domain <- "https://eatatstate.msu.edu/menu/"
+shaw <- "The%20Vista%20at%20Shaw/all/"
+sny_phy <- "The%20Gallery%20at%20Snyder%20Phillips/all/"
+landon <- "Heritage%20Commons%20at%20Landon/all/"
+
+dining_halls <- c(shaw, sny_phy, landon)
+
+# List of dates
+future_date <- ymd(today()) + days(10)
+dates <- seq(ymd(today()), future_date, by = 'day')
+
+# Number of dining halls
+dining_hall_no <- length(dining_halls) %>%
+  unlist()
+
+# Create lunch urls
+day_url <- dining_halls %>% 
+  map(~paste(domain, .x, dates, sep = "")) %>%
+  unlist()
+
+dining_halls
+dates
+day_url %>% 
+  head()
+```
+
+Next we will generate the URLs for lunch and dinner and combine them all.
+```{r}
+# Create dinner urls
+dinner <- "?field_mealtime_target_id=191"
+
+night_url <- dining_halls %>% 
+  map(~paste(domain, .x, dates, dinner, sep = "")) %>%
+  unlist()
+
+# Combine url list
+all_url <- c(day_url, night_url)
+
+all_url %>% 
+  head()
+```
+
+### Dates and Time
+We'll want to clean up the data with regular expressions and repeat "Lunch"  and "Dinner" for the dates and different dining halls.
+```{r}
+# Date
+date <- rep(dates, times = 2 * dining_hall_no)
+
+# Cafe
+
+no_dates <- length(dates) 
+names <- str_replace_all(dining_halls, "%20|\\/all\\/"," ")
+cafe <- rep(names, each = no_dates, times = 2)
+
+# Time
+time <- rep(c("Lunch", "Dinner"), each = no_dates * dining_hall_no)
+time
+```
+
+### Scrape
+Here I used the rvest package and combined it with purrr so I read multiple URLs and return the the text so we can put it into a data frame.
+```{r eval=FALSE}
+# Menu 
+menu <- all_url %>%   
+ map(~read_html(.x) %>% 
+      html_nodes(".meal-title") %>% 
+      html_text()) 
+```
+
+
+### Create a data frame
+We can bind the data into a data frame so we can easily filter and find menus that we like.
+```{r eval=FALSE}
+food <- tibble(date, cafe, time, menu) %>% 
+  unnest(menu) 
+
+dim(food)
+food
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+file <- here::here("data_files/MSU_menu.csv")
+food <- readr::read_csv(file)
+```
+
+
+```{r echo=FALSE}
+  food2 <- food %>% 
+  head(300) 
+
+dim(food)
+
+kable(food2) %>% 
+    kable_styling() %>% 
+    scroll_box( height = "600px")
+```
+
+I made it on Monday this week and to my surprise I saw that they would be serving it today for dinner in Landon! 
+```{r }
+food %>% 
+  filter(str_detect(menu, "Presidential"))
+```
+
+
+We can also filter to look at the menu for today only.
+```{r }
+food %>% 
+  filter(date == today())
+```
+
+# Wordcloud
+
+Since we have a tidy data frame of all the dining halls we can use the tidytext package from Julia Silge and David Robinson to tokenize the menu and make a word cloud.  First I used the palette from MSU's website and set it as an object `pal`.  Next we will unnest the tokens from the `food` data frame and count up the most frequent words.  We can remove filler words with an `anti_join()` command and then tell R to create a wordcloud!
+```{r message=FALSE, warning=FALSE}
+library(tidytext)
+library(wordcloud)
+library(RColorBrewer)
+
+# MSU palette colors  
+pal <- c("#97A2A2","#F08521","#6E005F","#F08521","#97A2A2","#0DB14B")
+
+set.seed(1234)
+
+food %>% 
+  unnest_tokens(menu, menu) %>% 
+  count(menu, sort = TRUE) %>% 
+  rename(word = menu) %>% 
+  anti_join(stop_words, by = "word") %>% 
+  with(wordcloud(word, n, random.order = FALSE, max.words = 40, color = pal,fixed.asp = TRUE))
+
+```
+
+
+# Shiny Dashboard
+Now that we learned how to make a wordcloud, scrape the menu into a tidy data frame we can work on making a interact with the data by making a shiny dashboard.
+
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+library(shiny)
+library(shinydashboard)
+
+ui <- dashboardPage(skin = "green",
+  dashboardHeader(title = "Eat at State"),
+  dashboardSidebar( selectInput(inputId = 'dininghall',
+                  label = 'Choose Dining Hall:',
+                  choices = c("All","The Vista at Shaw ",
+                              "The Gallery at Snyder Phillips ",
+                              "Heritage Commons at Landon "))
+  ),
+  
+  dashboardBody(
+    # Boxes need to be put in a row (or column)
+    fluidRow(
+      box(dataTableOutput("menu"),title = "MSU Dining Menu",
+          width = 12, status = "primary")
+      )
+    )
+  )
+
+server <- function(input, output) {
+  
+   menu <- reactive({
+    if(input$dininghall == "All")
+        return(food)
+    else
+      food %>% 
+       filter(cafe %in% input$dininghall)
+  })
+
+  output$menu <- renderDataTable(menu())
+}
+
+shinyApp(ui, server)
+```
+
+![Eat at State Shiny Dashboard](https://media.giphy.com/media/1evFtMR37i8VXzMwtJ/giphy.gif)
+
+
+# Presidential Chicken!
+
+![Landon](https://i.imgur.com/14UQkFE.jpg)
+I had the idea to scrape for presidential chicken on Monday this week and I was thrilled that Landon had it for dinner on Friday.  Now that I was able to go I decided to create this blog post to share with everyone!
