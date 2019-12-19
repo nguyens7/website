@@ -14,14 +14,14 @@ tags:
 subtitle: ''
 summary: ''
 authors: []
-lastmod: '2019-12-13T00:21:54-05:00'
-featured: no
+featured: yes
 
-header:
-  image: "headers/eatatstate_wordcloud.png"
+ 
+image: 
+  placement: 2
   caption: "Wordcloud of top menu items at MSU dining halls from 10/5/18 - 10/15/18"
-  focal_point: ''
-  preview_only: yes
+  focal_point: 'Center'
+  preview_only: false
 projects: []
 ---
 
@@ -2047,7 +2047,7 @@ food %>%
   with(wordcloud(word, n, random.order = FALSE, max.words = 40, color = pal,fixed.asp = TRUE))
 ```
 
-<img src="/post/2019-12-13-presidential-chicken_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="/post/2019-12-13-presidential-chicken/index_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 
 # Shiny Dashboard

@@ -14,14 +14,14 @@ tags:
 subtitle: ''
 summary: ''
 authors: []
-lastmod: '2019-12-13T00:21:54-05:00'
-featured: no
+featured: yes
 
-header:
-  image: "headers/eatatstate_wordcloud.png"
+ 
+image: 
+  placement: 2
   caption: "Wordcloud of top menu items at MSU dining halls from 10/5/18 - 10/15/18"
-  focal_point: ''
-  preview_only: yes
+  focal_point: 'Center'
+  preview_only: false
 projects: []
 ---
 
