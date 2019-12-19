@@ -79,9 +79,9 @@ dates
 ```
 
 ```
-##  [1] "2019-12-13" "2019-12-14" "2019-12-15" "2019-12-16" "2019-12-17"
-##  [6] "2019-12-18" "2019-12-19" "2019-12-20" "2019-12-21" "2019-12-22"
-## [11] "2019-12-23"
+##  [1] "2019-12-19" "2019-12-20" "2019-12-21" "2019-12-22" "2019-12-23"
+##  [6] "2019-12-24" "2019-12-25" "2019-12-26" "2019-12-27" "2019-12-28"
+## [11] "2019-12-29"
 ```
 
 ```r
@@ -90,12 +90,12 @@ day_url %>%
 ```
 
 ```
-## [1] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-13"
-## [2] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-14"
-## [3] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-15"
-## [4] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-16"
-## [5] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-17"
-## [6] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-18"
+## [1] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-19"
+## [2] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-20"
+## [3] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-21"
+## [4] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-22"
+## [5] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-23"
+## [6] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-24"
 ```
 
 Next we will generate the URLs for lunch and dinner and combine them all.
@@ -116,12 +116,12 @@ all_url %>%
 ```
 
 ```
-## [1] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-13"
-## [2] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-14"
-## [3] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-15"
-## [4] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-16"
-## [5] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-17"
-## [6] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-18"
+## [1] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-19"
+## [2] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-20"
+## [3] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-21"
+## [4] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-22"
+## [5] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-23"
+## [6] "https://eatatstate.msu.edu/menu/The%20Vista%20at%20Shaw/all/2019-12-24"
 ```
 
 ### Dates and Time
