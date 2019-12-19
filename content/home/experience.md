@@ -43,7 +43,7 @@ date_format = "Jan 2006"
   """
 
 [[experience]]
-  title = "Intellectual Property Commercialization Intern"
+  title = "Commercialization Intern"
   company = "MSU Technologies"
   company_url = "https://technologies.msu.edu/"
   location = "East Lansing, Michigan"
