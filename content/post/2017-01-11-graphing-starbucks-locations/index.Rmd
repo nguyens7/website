@@ -12,13 +12,12 @@ tags:
 subtitle: ''
 summary: ''
 authors: []
-lastmod: '2019-12-11T22:56:39-05:00'
 featured: yes
-view: 1
 
-header: 
-  image: '/headers/coffee_beans.jpg'
+image: 
   caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/TD4DBagg2wE)'
+  focal_point: 'Center'
+  preview_only: false
 ---
 ## Welcome to my R tutorial series
 

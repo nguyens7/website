@@ -5,23 +5,21 @@ date: '2018-04-06'
 slug: analyzing-my-sleep-data
 categories:
   - R
-  - VIsualization
+  - Visualization
 tags:
-  - Tidyverse
   - Sleep
   - Health
   - iOS
 subtitle: ''
 summary: ''
 authors: []
-lastmod: '2019-12-12T23:18:26-05:00'
-featured: no
+featured: yes
 
-header:
-  image: "headers/sleep.png"
+
+image: 
   caption: "Bedtime and Sleep Duration (2014-2018)"
-  focal_point: ''
-  preview_only: yes
+  focal_point: 'Center'
+  preview_only: false
 projects: []
 ---
 
@@ -90,7 +88,7 @@ df</code></pre>
        y = &quot;Hours of Sleep&quot;,
        color = &quot;Sleep Quality\n&quot;) +
   theme_bw()</code></pre>
-<p><img src="/post/2018-04-06-analyzing-my-sleep-data_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<p><img src="/post/2018-04-06-analyzing-my-sleep-data/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 Next I wanted to see what time I went to sleep and look at the sleep quality. We can see that the quality appears to go up as I go to bed earlier.</p>
 <pre class="r"><code>df %&gt;% 
   ggplot(aes(x = Start, y = sleep_time, color = sleep_quality)) +
@@ -106,7 +104,7 @@ Next I wanted to see what time I went to sleep and look at the sleep quality. We
        y = &quot;Bedtime&quot;,
        color = &quot;Sleep Quality\n&quot;) +
   theme_bw()</code></pre>
-<p><img src="/post/2018-04-06-analyzing-my-sleep-data_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/post/2018-04-06-analyzing-my-sleep-data/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Then I wondered if there might be a difference in bedtime between weekdays and weekends. It looks like there’s not a huge difference between bedtime between the two.</p>
 <pre class="r"><code>df %&gt;% 
   ggplot(aes(x = Start, y = sleep_time, color = what_day)) +
@@ -121,7 +119,7 @@ Next I wanted to see what time I went to sleep and look at the sleep quality. We
        y = &quot;Bedtime&quot;,
        color = &quot;&quot;) +
   theme_bw()</code></pre>
-<p><img src="/post/2018-04-06-analyzing-my-sleep-data_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/post/2018-04-06-analyzing-my-sleep-data/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>We can then look at the comparison between Sleep Quality and Hours of Sleep. Here it’s readily apparent the more you sleep the better the quality. This is isn’t ground breaking insight but it is pretty neat to be able to see my own data verifying what’s known in the literature. We can see that sleep quality taper off after 8+ hours of sleep.</p>
 <pre class="r"><code>df %&gt;% 
   ggplot(aes(x = time_hr, y = sleep_quality, color = what_day)) +
@@ -134,7 +132,7 @@ Next I wanted to see what time I went to sleep and look at the sleep quality. We
        y = &quot;Sleep Quality&quot;,
        color = &quot;&quot;) +
   theme_bw()</code></pre>
-<p><img src="/post/2018-04-06-analyzing-my-sleep-data_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<p><img src="/post/2018-04-06-analyzing-my-sleep-data/index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 Sleep cycle also allows you to integrate your sleep data with the pedometer so I plotted sleep duration vs the number of steps per day to see if there was a trend. There doesn’t appear to be too much of a trend between the two. The only thing we really see is that 8+ hours of sleep is a good predictor of good sleep quality. Side note: all the days I went over 10,000 steps were days I where I was traveling since I tend to walk everywhere when traveling to different places.</p>
 <pre class="r"><code>df %&gt;%
   filter(steps &gt; 0,
@@ -150,7 +148,7 @@ Sleep cycle also allows you to integrate your sleep data with the pedometer so I
        y = &quot;Sleep Duration (hr)&quot;,
        color = &quot;Sleep Quality\n&quot;) +
   theme_dark()</code></pre>
-<p><img src="/post/2018-04-06-analyzing-my-sleep-data_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/post/2018-04-06-analyzing-my-sleep-data/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>The next visualization we can perform is a ridgeline plot which is this nice way of visualizing changes over time. I like to think of them is layered/stacked histograms. We can make a ridgeline plot of steps and compare them throughout the days of the week. We see that there’s not too much of a difference in the number of steps but there tends to be more step activity as the week progresses.</p>
 <pre class="r"><code>df %&gt;% 
   ggplot(aes(x = steps, y = day_of_week, fill = ..x..)) +
@@ -162,7 +160,7 @@ Sleep cycle also allows you to integrate your sleep data with the pedometer so I
        subtitle = &quot;Source: iPhone sleep cycle data (2014-2018)&quot;,
        x = &quot;Steps&quot;) +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())</code></pre>
-<p><img src="/post/2018-04-06-analyzing-my-sleep-data_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="/post/2018-04-06-analyzing-my-sleep-data/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Next thing to do is look at sleep duration across the days of the week. Here we can see that I definitely catch up on my sleep on Saturdays!</p>
 <pre class="r"><code>df %&gt;% 
   ggplot(aes(x = time_hr, y = day_of_week, fill = ..x..)) +
@@ -175,7 +173,7 @@ Sleep cycle also allows you to integrate your sleep data with the pedometer so I
        subtitle = &quot;Source: iPhone sleep cycle data (2014-2018)&quot;,
        x = &quot;Time spent sleeping (hr)&quot;) + 
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank()) </code></pre>
-<p><img src="/post/2018-04-06-analyzing-my-sleep-data_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/post/2018-04-06-analyzing-my-sleep-data/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>I then wanted to look at quality of sleep across the week but didn’t see an obvious trend.</p>
 <pre class="r"><code>df %&gt;% 
   ggplot(aes(x = sleep_quality, y = day_of_week, fill = ..x..)) +
@@ -186,7 +184,7 @@ Sleep cycle also allows you to integrate your sleep data with the pedometer so I
   labs(title = &#39;Quality of Sleep Each Day of the Week&#39;,
        subtitle = &quot;Source: iPhone sleep cycle data (2014-2018)&quot;) +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())</code></pre>
-<p><img src="/post/2018-04-06-analyzing-my-sleep-data_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="/post/2018-04-06-analyzing-my-sleep-data/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>One of the most interesting things that I saw was when I graphed my quality of sleep by year. 2014 was a rough time during my graduate school education and you can clearly see an improvement in my sleep quality after I joined a new lab in 2015. The crazy thing is that this is only sleep data and you can get a ton of interesting information from a phone app.</p>
 <pre class="r"><code>df %&gt;% 
   ggplot(aes(x = sleep_quality, y = year, fill = ..x..)) +
@@ -198,7 +196,7 @@ Sleep cycle also allows you to integrate your sleep data with the pedometer so I
        subtitle = &quot;Source: iPhone sleep cycle data (2014-2018)&quot;,
        x = &quot;Sleep Quality (%)&quot;) +
   theme_ridges(font_size = 13, grid = TRUE) + theme(axis.title.y = element_blank())</code></pre>
-<p><img src="/post/2018-04-06-analyzing-my-sleep-data_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="/post/2018-04-06-analyzing-my-sleep-data/index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Here’s how I created the header of this blog post. I graphed bedtime across time and mapped the color to sleep duration and removed the axis to make it look more artistic.</p>
 <pre class="r"><code>p &lt;- df %&gt;% 
   ggplot(aes(x = Start, y = sleep_time, color = time_hr)) +
@@ -214,7 +212,7 @@ Sleep cycle also allows you to integrate your sleep data with the pedometer so I
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank())
 p </code></pre>
-<p><img src="/post/2018-04-06-analyzing-my-sleep-data_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="/post/2018-04-06-analyzing-my-sleep-data/index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <pre class="r"><code>ggsave(here(&quot;static/img/headers&quot;,  &quot;sleep.png&quot;),
        height = 4, width = 7, units = &quot;in&quot;, dpi = 600)</code></pre>
 <p>Notice how I use <strong>here</strong> within the ggsave function to specify which folder within the R project directory to save the file. This makes sure that the code will work on ANYONE’S computer regardless of where they put their folder!</p>

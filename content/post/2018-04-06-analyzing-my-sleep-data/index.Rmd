@@ -5,23 +5,21 @@ date: '2018-04-06'
 slug: analyzing-my-sleep-data
 categories:
   - R
-  - VIsualization
+  - Visualization
 tags:
-  - Tidyverse
   - Sleep
   - Health
   - iOS
 subtitle: ''
 summary: ''
 authors: []
-lastmod: '2019-12-12T23:18:26-05:00'
-featured: no
+featured: yes
 
-header:
-  image: "headers/sleep.png"
+
+image: 
   caption: "Bedtime and Sleep Duration (2014-2018)"
-  focal_point: ''
-  preview_only: yes
+  focal_point: 'Center'
+  preview_only: false
 projects: []
 ---
 I've been using the [**iOS Sleep Cycle**](https://apps.apple.com/us/app/sleep-cycle-smart-alarm-clock/id320606217) app to track my sleeping since late 2014 and have accumulated quite a bit of information about my sleeping habits.  I wanted to see if I could do some exploratory data analysis and try out some different packages to clean up and visualize my data. The data from the app comes in a csv file and contains information like date, sleep quality, sleep duration, and more recently it can integrate with the pedometer so you can get the number of steps in a given day. The tidyverse is my go to package for a ton of my data analysis, it works so well with cleaning up and exploring data.
