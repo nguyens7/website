@@ -71,4 +71,6 @@ user_groups:
 - Visitors
 ---
 
-I’m a graduate student in the Petroff lab at MSU and am an executive board member of MSU Data Science. When I’m not in the lab, I enjoy cooking, photography, and reading. #rstats 📈♟️🥘
+I’m a graduate student in the Petroff lab at MSU and am an executive board member of MSU Data Science. When I’m not in the lab, I enjoy cooking, photography, and reading. #rstats 📈♟️🥘   
+
+
