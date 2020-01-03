@@ -28,10 +28,10 @@ interests:
 
 education:
   courses:
-  - course: PhD in Cell and Molecular Biology & Environmental Toxicology
+  - course: Ph.D. in Cell and Molecular Biology & Environmental Toxicology
     institution: Michigan State University
     year: 2020
-  - course: BSc in Biological Sciences & Psychology
+  - course: B.Sc. in Biological Sciences & Psychology
     institution: The University of Michigan-Dearborn
     year: 2012
 
@@ -72,5 +72,9 @@ user_groups:
 ---
 
 I’m a graduate student in the Petroff lab at MSU and am an executive board member of MSU Data Science. When I’m not in the lab, I enjoy cooking, photography, and reading. #rstats 📈♟️🥘   
+
+  
+This site was made with [blogdown](https://bookdown.org/yihui/blogdown/) and [Hugo](https://gohugo.io/),  and  deployed with [Netlify](https://www.netlify.com/).    
+If you find my blog useful, [you can buy me a coffee on Ko-fi.](https://ko-fi.com/O4O71BDFZ)
 
 

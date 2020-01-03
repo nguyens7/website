@@ -13,7 +13,7 @@ baseurl = "https://seanlnguyen.com/"
 
 # Enter a copyright notice to display in the site footer.
 # To display a copyright symbol, type `&copy;`. For current year, type `{year}`.
-copyright = " &copy; Sean Nguyen {year} · [Support Me on Ko-fi](https://ko-fi.com/O4O71BDFZ)"
+copyright = " &copy; Sean Nguyen {year} "
 
 ############################
 ## Advanced options below ##
