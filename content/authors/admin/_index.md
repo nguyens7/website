@@ -75,6 +75,6 @@ I’m a graduate student in the Petroff lab at MSU and am an executive board mem
 
   
 This site was made with [blogdown](https://bookdown.org/yihui/blogdown/) and [Hugo](https://gohugo.io/),  and  deployed with [Netlify](https://www.netlify.com/).    
-If you find my blog useful, [you can buy me a ☕️on Ko-fi.](https://ko-fi.com/O4O71BDFZ)
+If you find my blog useful, [you can buy me a ☕️ on Ko-fi.](https://ko-fi.com/O4O71BDFZ)
 
 
