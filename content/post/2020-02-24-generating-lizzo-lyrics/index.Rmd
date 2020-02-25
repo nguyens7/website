@@ -173,7 +173,7 @@ Lizzo %>%
 ```
 ### Lizzo Cuz I Love You sentiment analysis
 
-Next we can take the Lizzo lyrics and get rid of stop words by using an`anti_join()` and `inner_join()` with the bing sentiment dataframe and add up the top 10 ngrams and visualize it. 
+Next we can take the Lizzo lyrics and get rid of stop words by using an `anti_join()` and `inner_join()` with the bing sentiment dataframe and add up the top 10 ngrams and visualize it. 
 ```{r message=FALSE, warning=FALSE}
 Lizzo %>% 
   unnest_tokens(word, lyric) %>%

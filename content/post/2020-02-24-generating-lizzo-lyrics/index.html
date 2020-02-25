@@ -540,7 +540,7 @@ on my
 </div>
 <div id="lizzo-cuz-i-love-you-sentiment-analysis" class="section level3">
 <h3>Lizzo Cuz I Love You sentiment analysis</h3>
-<p>Next we can take the Lizzo lyrics and get rid of stop words by using an<code>anti_join()</code> and <code>inner_join()</code> with the bing sentiment dataframe and add up the top 10 ngrams and visualize it.</p>
+<p>Next we can take the Lizzo lyrics and get rid of stop words by using an <code>anti_join()</code> and <code>inner_join()</code> with the bing sentiment dataframe and add up the top 10 ngrams and visualize it.</p>
 <pre class="r"><code>Lizzo %&gt;% 
   unnest_tokens(word, lyric) %&gt;%
   anti_join(stop_words) %&gt;%
@@ -608,30 +608,30 @@ Lizzo_corpus %&gt;%
   only_distinct = TRUE,
   return_message = TRUE) %&gt;% 
   kable()</code></pre>
-<pre><code>## textLizzoBot: You and you and you and you and
-## textLizzoBot: I&#39;m cryin&#39;, I&#39;m cryin&#39;, I&#39;m cryin&#39;, I&#39;m cryin&#39;, I&#39;m cryin&#39;, hey
-## textLizzoBot: I know I&#39;m a queen, but I don&#39;t give a fuck, no
-## textLizzoBot: They used to say goodbye
-## textLizzoBot: Oh, if I want to, huh
-## textLizzoBot: Gotta blame it on my juice, blame it, blame it on my juice
-## textLizzoBot: Smile if I try to tell you then you real like a crystal ball
-## textLizzoBot: Yeah, you can buy yourself
-## textLizzoBot: Gotta blame it on the higher shelf
-## textLizzoBot: All the fly girls head to the tempo
-## textLizzoBot: Catch you on a pedestal, bet on me, bet I will
-## textLizzoBot: I never said that you stood a chance with this royalty?
-## textLizzoBot: Gotta blame it on my juice, blame it, blame it on my juice, baby
-## textLizzoBot: I need to apologize
-## textLizzoBot: Honestly, I don&#39;t need no crown
-## textLizzoBot: Only exes that I didn&#39;t care
-## textLizzoBot: Turn it up to the tempo
-## textLizzoBot: Gotta blame it on the wall
-## textLizzoBot: Lit up like a girl, cry like a girl, cry like a girl
-## textLizzoBot: Got you something from the Bentley
-## textLizzoBot: You know it was ending right there
-## textLizzoBot: Then you get your shit rocked
+<pre><code>## textLizzoBot: Gotta blame it on the low, I was love-impaired
+## textLizzoBot: I thought I was perfect
+## textLizzoBot: I&#39;ma show you how I roll
+## textLizzoBot: I thought that I didn&#39;t know it hurts sometimes
+## textLizzoBot: My love is your love be mine?
+## textLizzoBot: Another round from the liquor store
+## textLizzoBot: Will you be my lover
+## textLizzoBot: Hee, hee, hee, hee, hee, hee, hee, hee, hee, hee
+## textLizzoBot: Gotta blame it on my juice, blame it, blame it on my juice, blame it, blame it on the Goose
+## textLizzoBot: Honestly, I don&#39;t got no feelings
+## textLizzoBot: Lit up like a girl, then you try to change, hey
+## textLizzoBot: Mirror, mirror on the Goose
+## textLizzoBot: I&#39;ma show you how I feel
+## textLizzoBot: Another round from the Bentley
+## textLizzoBot: My heart ain&#39;t got no ceiling
+## textLizzoBot: Fuck it up, fuck it up to the tempo
+## textLizzoBot: Y&#39;all, who you think you got me dickmatized
+## textLizzoBot: But I&#39;ma show y&#39;all chicks how to look
 ## textLizzoBot: So I figured out I gotta testify
-## textLizzoBot: What you want me to exercise</code></pre>
+## textLizzoBot: I think he got lost in my fucking chromosomes
+## textLizzoBot: Blame it on my juice, blame it, blame it on my juice, blame it, blame it on my juice
+## textLizzoBot: I think he wanna knuckle up
+## textLizzoBot: Ooh, can I get a man, you had to know how to drrr it
+## textLizzoBot: I thought I was a ho</code></pre>
 <table>
 <thead>
 <tr>
@@ -649,7 +649,7 @@ textLizzoBot
 1
 </td>
 <td style="text-align:left;">
-You and you and you and you and
+Gotta blame it on the low, I was love-impaired
 </td>
 </tr>
 <tr>
@@ -657,7 +657,7 @@ You and you and you and you and
 2
 </td>
 <td style="text-align:left;">
-I’m cryin’, I’m cryin’, I’m cryin’, I’m cryin’, I’m cryin’, hey
+I thought I was perfect
 </td>
 </tr>
 <tr>
@@ -665,7 +665,7 @@ I’m cryin’, I’m cryin’, I’m cryin’, I’m cryin’, I’m cryin’, 
 3
 </td>
 <td style="text-align:left;">
-I know I’m a queen, but I don’t give a fuck, no
+I’ma show you how I roll
 </td>
 </tr>
 <tr>
@@ -673,7 +673,7 @@ I know I’m a queen, but I don’t give a fuck, no
 4
 </td>
 <td style="text-align:left;">
-They used to say goodbye
+I thought that I didn’t know it hurts sometimes
 </td>
 </tr>
 <tr>
@@ -681,7 +681,7 @@ They used to say goodbye
 5
 </td>
 <td style="text-align:left;">
-Oh, if I want to, huh
+My love is your love be mine?
 </td>
 </tr>
 <tr>
@@ -689,7 +689,7 @@ Oh, if I want to, huh
 6
 </td>
 <td style="text-align:left;">
-Gotta blame it on my juice, blame it, blame it on my juice
+Another round from the liquor store
 </td>
 </tr>
 <tr>
@@ -697,7 +697,7 @@ Gotta blame it on my juice, blame it, blame it on my juice
 7
 </td>
 <td style="text-align:left;">
-Smile if I try to tell you then you real like a crystal ball
+Will you be my lover
 </td>
 </tr>
 <tr>
@@ -705,7 +705,7 @@ Smile if I try to tell you then you real like a crystal ball
 8
 </td>
 <td style="text-align:left;">
-Yeah, you can buy yourself
+Hee, hee, hee, hee, hee, hee, hee, hee, hee, hee
 </td>
 </tr>
 <tr>
@@ -713,7 +713,7 @@ Yeah, you can buy yourself
 9
 </td>
 <td style="text-align:left;">
-Gotta blame it on the higher shelf
+Gotta blame it on my juice, blame it, blame it on my juice, blame it, blame it on the Goose
 </td>
 </tr>
 <tr>
@@ -721,7 +721,7 @@ Gotta blame it on the higher shelf
 10
 </td>
 <td style="text-align:left;">
-All the fly girls head to the tempo
+Honestly, I don’t got no feelings
 </td>
 </tr>
 <tr>
@@ -729,7 +729,7 @@ All the fly girls head to the tempo
 11
 </td>
 <td style="text-align:left;">
-Catch you on a pedestal, bet on me, bet I will
+Lit up like a girl, then you try to change, hey
 </td>
 </tr>
 <tr>
@@ -737,7 +737,7 @@ Catch you on a pedestal, bet on me, bet I will
 12
 </td>
 <td style="text-align:left;">
-I never said that you stood a chance with this royalty?
+Mirror, mirror on the Goose
 </td>
 </tr>
 <tr>
@@ -745,7 +745,7 @@ I never said that you stood a chance with this royalty?
 13
 </td>
 <td style="text-align:left;">
-Gotta blame it on my juice, blame it, blame it on my juice, baby
+I’ma show you how I feel
 </td>
 </tr>
 <tr>
@@ -753,7 +753,7 @@ Gotta blame it on my juice, blame it, blame it on my juice, baby
 14
 </td>
 <td style="text-align:left;">
-I need to apologize
+Another round from the Bentley
 </td>
 </tr>
 <tr>
@@ -761,7 +761,7 @@ I need to apologize
 15
 </td>
 <td style="text-align:left;">
-Honestly, I don’t need no crown
+My heart ain’t got no ceiling
 </td>
 </tr>
 <tr>
@@ -769,7 +769,7 @@ Honestly, I don’t need no crown
 16
 </td>
 <td style="text-align:left;">
-Only exes that I didn’t care
+Fuck it up, fuck it up to the tempo
 </td>
 </tr>
 <tr>
@@ -777,7 +777,7 @@ Only exes that I didn’t care
 17
 </td>
 <td style="text-align:left;">
-Turn it up to the tempo
+Y’all, who you think you got me dickmatized
 </td>
 </tr>
 <tr>
@@ -785,7 +785,7 @@ Turn it up to the tempo
 18
 </td>
 <td style="text-align:left;">
-Gotta blame it on the wall
+But I’ma show y’all chicks how to look
 </td>
 </tr>
 <tr>
@@ -793,7 +793,7 @@ Gotta blame it on the wall
 19
 </td>
 <td style="text-align:left;">
-Lit up like a girl, cry like a girl, cry like a girl
+So I figured out I gotta testify
 </td>
 </tr>
 <tr>
@@ -801,7 +801,7 @@ Lit up like a girl, cry like a girl, cry like a girl
 20
 </td>
 <td style="text-align:left;">
-Got you something from the Bentley
+I think he got lost in my fucking chromosomes
 </td>
 </tr>
 <tr>
@@ -809,7 +809,7 @@ Got you something from the Bentley
 21
 </td>
 <td style="text-align:left;">
-You know it was ending right there
+Blame it on my juice, blame it, blame it on my juice, blame it, blame it on my juice
 </td>
 </tr>
 <tr>
@@ -817,7 +817,7 @@ You know it was ending right there
 22
 </td>
 <td style="text-align:left;">
-Then you get your shit rocked
+I think he wanna knuckle up
 </td>
 </tr>
 <tr>
@@ -825,7 +825,7 @@ Then you get your shit rocked
 23
 </td>
 <td style="text-align:left;">
-So I figured out I gotta testify
+Ooh, can I get a man, you had to know how to drrr it
 </td>
 </tr>
 <tr>
@@ -833,7 +833,7 @@ So I figured out I gotta testify
 24
 </td>
 <td style="text-align:left;">
-What you want me to exercise
+I thought I was a ho
 </td>
 </tr>
 </tbody>
