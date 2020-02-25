@@ -97,9 +97,12 @@ Ltweet %>%
 knitr::include_graphics("Lizzo_tweet_plot.png")
 ```
 
-## Using Genius to get lyrics  
+### Using Genius to get lyrics  
 
-We can use the [genius package](https://github.com/JosiahParry/genius) to query music lyrics in R.  We use the command `genius_lyrics()` and to anlayze the lyrics from a song and artist.  Next we can use Julia Silge and David Robinson's  [tidytext package](https://github.com/juliasilge/tidytext)  to unnest tokens and obtain 2-word "ngrams".  We will use this later on to make our Markov chain generator.
+We can use the [genius package](https://github.com/JosiahParry/genius) to query music lyrics in R.  We use the command `genius_lyrics()` and to anlayze the lyrics from a song and artist. For this example we can get the lyrics for "Mr. Brightside" by The Killers.  Next we can use Julia Silge and David Robinson's  [tidytext package](https://github.com/juliasilge/tidytext)  to unnest tokens and obtain 2-word "ngrams".  We will use this later on to make our Markov chain generator.
+
+![The Killers](https://media.giphy.com/media/bbiEwsO8Ss4wM/giphy.gif)
+
 ```{r}
 genius_lyrics("the killers", "mr. brightside") %>% 
     unnest_tokens(bigram, lyric, token = "ngrams", n = 2) %>%
@@ -108,7 +111,7 @@ genius_lyrics("the killers", "mr. brightside") %>%
     head(10) %>% 
     kable() 
 ```
-
+### Analyzing sentiment 
 Next we can use the sentiment lexicon from [Bing Liu et al](https://juliasilge.github.io/tidytext/reference/sentiments.html) which is included in the tidytext package.  We will use this to 'inner_join' with our lyric collection.
 
 ```{r message=FALSE, warning=FALSE}
@@ -118,7 +121,7 @@ bing %>%
   head(10) %>% 
   kable()
 ```
-## Getting Cuz I Love You lyrics  
+### Getting Cuz I Love You lyrics  
 
 Now that we learned how more about the [genius package](https://github.com/JosiahParry/genius) we can use the 'genius_album()` command to get the lyrics from Cuz I Love You.
 ```{r message=FALSE, warning=FALSE}

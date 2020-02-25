@@ -58,9 +58,13 @@ Ltweet</code></pre>
 <img src="Lizzo_tweet_plot.png" alt="Lizzo tweet plot" />
 <p class="caption">Lizzo tweet plot</p>
 </div>
-<div id="using-genius-to-get-lyrics" class="section level2">
-<h2>Using Genius to get lyrics</h2>
-<p>We can use the <a href="https://github.com/JosiahParry/genius">genius package</a> to query music lyrics in R. We use the command <code>genius_lyrics()</code> and to anlayze the lyrics from a song and artist. Next we can use Julia Silge and David Robinson’s <a href="https://github.com/juliasilge/tidytext">tidytext package</a> to unnest tokens and obtain 2-word “ngrams”. We will use this later on to make our Markov chain generator.</p>
+<div id="using-genius-to-get-lyrics" class="section level3">
+<h3>Using Genius to get lyrics</h3>
+<p>We can use the <a href="https://github.com/JosiahParry/genius">genius package</a> to query music lyrics in R. We use the command <code>genius_lyrics()</code> and to anlayze the lyrics from a song and artist. For this example we can get the lyrics for “Mr. Brightside” by The Killers. Next we can use Julia Silge and David Robinson’s <a href="https://github.com/juliasilge/tidytext">tidytext package</a> to unnest tokens and obtain 2-word “ngrams”. We will use this later on to make our Markov chain generator.</p>
+<div class="figure">
+<img src="https://media.giphy.com/media/bbiEwsO8Ss4wM/giphy.gif" alt="The Killers" />
+<p class="caption">The Killers</p>
+</div>
 <pre class="r"><code>genius_lyrics(&quot;the killers&quot;, &quot;mr. brightside&quot;) %&gt;% 
     unnest_tokens(bigram, lyric, token = &quot;ngrams&quot;, n = 2) %&gt;%
     count(bigram) %&gt;% 
@@ -161,6 +165,9 @@ all in
 </tr>
 </tbody>
 </table>
+</div>
+<div id="analyzing-sentiment" class="section level3">
+<h3>Analyzing sentiment</h3>
 <p>Next we can use the sentiment lexicon from <a href="https://juliasilge.github.io/tidytext/reference/sentiments.html">Bing Liu et al</a> which is included in the tidytext package. We will use this to ‘inner_join’ with our lyric collection.</p>
 <pre class="r"><code>bing &lt;- get_sentiments(&quot;bing&quot;)
 
@@ -262,8 +269,8 @@ negative
 </tbody>
 </table>
 </div>
-<div id="getting-cuz-i-love-you-lyrics" class="section level2">
-<h2>Getting Cuz I Love You lyrics</h2>
+<div id="getting-cuz-i-love-you-lyrics" class="section level3">
+<h3>Getting Cuz I Love You lyrics</h3>
 <p>Now that we learned how more about the <a href="https://github.com/JosiahParry/genius">genius package</a> we can use the ’genius_album()` command to get the lyrics from Cuz I Love You.</p>
 <pre class="r"><code>Lizzo &lt;- genius_album(artist = &quot;Lizzo&quot;, album = &quot;Cuz I Love You&quot;)
 
@@ -531,6 +538,7 @@ on my
 </tr>
 </tbody>
 </table>
+</div>
 <div id="lizzo-cuz-i-love-you-sentiment-analysis" class="section level3">
 <h3>Lizzo Cuz I Love You sentiment analysis</h3>
 <p>Next we can take the Lizzo lyrics and get rid of stop words by using an<code>anti_join()</code> and <code>inner_join()</code> with the bing sentiment dataframe and add up the top 10 ngrams and visualize it.</p>
@@ -558,7 +566,6 @@ It seems like there’s plenty of of “love” and positive word sentiment in t
 <div class="figure">
 <img src="https://media.giphy.com/media/IzinVgJa1SITQ44YNS/giphy.gif" alt="Lizzo love" />
 <p class="caption">Lizzo love</p>
-</div>
 </div>
 </div>
 <div id="markovify" class="section level1">
@@ -605,31 +612,29 @@ Lizzo_corpus %&gt;%
   only_distinct = TRUE,
   return_message = TRUE) %&gt;% 
   kable()</code></pre>
-<pre><code>## textLizzoBot: All the fly girls head to the tempo
-## textLizzoBot: I&#39;m the pudding in the rain
-## textLizzoBot: I&#39;m about to add a little slow
-## textLizzoBot: Color me, color me, color me, color me, color me, color me, color me, color me
+<pre><code>## textLizzoBot: Color me, color me, color me, color me, color me
 ## textLizzoBot: They used to say goodbye
-## textLizzoBot: Say whoa, something like a crystal ball
-## textLizzoBot: You know it was ending right there
-## textLizzoBot: Yeah, you can buy yourself
-## textLizzoBot: If you think you sassing?
-## textLizzoBot: Gotta blame it on my juice, blame it, blame it on my juice, blame it, blame it on the low, I was a ho
-## textLizzoBot: Trust, baby, you can&#39;t make me crescendo, I&#39;m going up
-## textLizzoBot: Ooh, can I get a little lost sometimes
-## textLizzoBot: And I gotta be my lover
+## textLizzoBot: I thought that I didn&#39;t know it hurts sometimes
+## textLizzoBot: Will you be my lover
+## textLizzoBot: I thought I was ashamed
+## textLizzoBot: Sorry if my heart a little estrogen
+## textLizzoBot: You&#39;re either not with me or hate me
+## textLizzoBot: Who told you that you wasn&#39;t attractive
+## textLizzoBot: And I don&#39;t need no crown
+## textLizzoBot: Oh no, don&#39;t you get your man
 ## textLizzoBot: Turn it up to the tempo
-## textLizzoBot: That&#39;s exactly how I roll
-## textLizzoBot: Shit, fuck, I didn&#39;t care
-## textLizzoBot: So I figured out I gotta be my lover
-## textLizzoBot: I&#39;m cryin&#39;, I&#39;m cryin&#39;, hey
-## textLizzoBot: Please step away from the liquor store
-## textLizzoBot: Now watch me do it for you just in case
-## textLizzoBot: So I lounge around in my fucking chromosomes
-## textLizzoBot: So if you are the love of my life
-## textLizzoBot: Y&#39;all, who you think you got me dickmatized
-## textLizzoBot: Fly you out of my life
-## textLizzoBot: Say whoa, time&#39;s up on legendary</code></pre>
+## textLizzoBot: They used to say to keep a man, you had to know how to drrr it
+## textLizzoBot: Then you get your shit rocked
+## textLizzoBot: Only exes that I didn&#39;t know it was ending right there
+## textLizzoBot: Honestly, I don&#39;t need to apologize
+## textLizzoBot: If you feel like a girl, cry like a girl
+## textLizzoBot: Twerk skills up on these motherfuckers
+## textLizzoBot: Gotta blame it on my juice, blame it, blame it on the wall
+## textLizzoBot: Uh, look, listen, shut up and kiss me, oh
+## textLizzoBot: I wanna be way more than friends, what?
+## textLizzoBot: I think he got lost in my lingerie
+## textLizzoBot: Another round from the bottle on the low, I was love-impaired
+## textLizzoBot: That&#39;s how I feel</code></pre>
 <table>
 <thead>
 <tr>
@@ -647,7 +652,7 @@ textLizzoBot
 1
 </td>
 <td style="text-align:left;">
-All the fly girls head to the tempo
+Color me, color me, color me, color me, color me
 </td>
 </tr>
 <tr>
@@ -655,7 +660,7 @@ All the fly girls head to the tempo
 2
 </td>
 <td style="text-align:left;">
-I’m the pudding in the rain
+They used to say goodbye
 </td>
 </tr>
 <tr>
@@ -663,7 +668,7 @@ I’m the pudding in the rain
 3
 </td>
 <td style="text-align:left;">
-I’m about to add a little slow
+I thought that I didn’t know it hurts sometimes
 </td>
 </tr>
 <tr>
@@ -671,7 +676,7 @@ I’m about to add a little slow
 4
 </td>
 <td style="text-align:left;">
-Color me, color me, color me, color me, color me, color me, color me, color me
+Will you be my lover
 </td>
 </tr>
 <tr>
@@ -679,7 +684,7 @@ Color me, color me, color me, color me, color me, color me, color me, color me
 5
 </td>
 <td style="text-align:left;">
-They used to say goodbye
+I thought I was ashamed
 </td>
 </tr>
 <tr>
@@ -687,7 +692,7 @@ They used to say goodbye
 6
 </td>
 <td style="text-align:left;">
-Say whoa, something like a crystal ball
+Sorry if my heart a little estrogen
 </td>
 </tr>
 <tr>
@@ -695,7 +700,7 @@ Say whoa, something like a crystal ball
 7
 </td>
 <td style="text-align:left;">
-You know it was ending right there
+You’re either not with me or hate me
 </td>
 </tr>
 <tr>
@@ -703,7 +708,7 @@ You know it was ending right there
 8
 </td>
 <td style="text-align:left;">
-Yeah, you can buy yourself
+Who told you that you wasn’t attractive
 </td>
 </tr>
 <tr>
@@ -711,7 +716,7 @@ Yeah, you can buy yourself
 9
 </td>
 <td style="text-align:left;">
-If you think you sassing?
+And I don’t need no crown
 </td>
 </tr>
 <tr>
@@ -719,7 +724,7 @@ If you think you sassing?
 10
 </td>
 <td style="text-align:left;">
-Gotta blame it on my juice, blame it, blame it on my juice, blame it, blame it on the low, I was a ho
+Oh no, don’t you get your man
 </td>
 </tr>
 <tr>
@@ -727,7 +732,7 @@ Gotta blame it on my juice, blame it, blame it on my juice, blame it, blame it o
 11
 </td>
 <td style="text-align:left;">
-Trust, baby, you can’t make me crescendo, I’m going up
+Turn it up to the tempo
 </td>
 </tr>
 <tr>
@@ -735,7 +740,7 @@ Trust, baby, you can’t make me crescendo, I’m going up
 12
 </td>
 <td style="text-align:left;">
-Ooh, can I get a little lost sometimes
+They used to say to keep a man, you had to know how to drrr it
 </td>
 </tr>
 <tr>
@@ -743,7 +748,7 @@ Ooh, can I get a little lost sometimes
 13
 </td>
 <td style="text-align:left;">
-And I gotta be my lover
+Then you get your shit rocked
 </td>
 </tr>
 <tr>
@@ -751,7 +756,7 @@ And I gotta be my lover
 14
 </td>
 <td style="text-align:left;">
-Turn it up to the tempo
+Only exes that I didn’t know it was ending right there
 </td>
 </tr>
 <tr>
@@ -759,7 +764,7 @@ Turn it up to the tempo
 15
 </td>
 <td style="text-align:left;">
-That’s exactly how I roll
+Honestly, I don’t need to apologize
 </td>
 </tr>
 <tr>
@@ -767,7 +772,7 @@ That’s exactly how I roll
 16
 </td>
 <td style="text-align:left;">
-Shit, fuck, I didn’t care
+If you feel like a girl, cry like a girl
 </td>
 </tr>
 <tr>
@@ -775,7 +780,7 @@ Shit, fuck, I didn’t care
 17
 </td>
 <td style="text-align:left;">
-So I figured out I gotta be my lover
+Twerk skills up on these motherfuckers
 </td>
 </tr>
 <tr>
@@ -783,7 +788,7 @@ So I figured out I gotta be my lover
 18
 </td>
 <td style="text-align:left;">
-I’m cryin’, I’m cryin’, hey
+Gotta blame it on my juice, blame it, blame it on the wall
 </td>
 </tr>
 <tr>
@@ -791,7 +796,7 @@ I’m cryin’, I’m cryin’, hey
 19
 </td>
 <td style="text-align:left;">
-Please step away from the liquor store
+Uh, look, listen, shut up and kiss me, oh
 </td>
 </tr>
 <tr>
@@ -799,7 +804,7 @@ Please step away from the liquor store
 20
 </td>
 <td style="text-align:left;">
-Now watch me do it for you just in case
+I wanna be way more than friends, what?
 </td>
 </tr>
 <tr>
@@ -807,7 +812,7 @@ Now watch me do it for you just in case
 21
 </td>
 <td style="text-align:left;">
-So I lounge around in my fucking chromosomes
+I think he got lost in my lingerie
 </td>
 </tr>
 <tr>
@@ -815,7 +820,7 @@ So I lounge around in my fucking chromosomes
 22
 </td>
 <td style="text-align:left;">
-So if you are the love of my life
+Another round from the bottle on the low, I was love-impaired
 </td>
 </tr>
 <tr>
@@ -823,23 +828,7 @@ So if you are the love of my life
 23
 </td>
 <td style="text-align:left;">
-Y’all, who you think you got me dickmatized
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-24
-</td>
-<td style="text-align:left;">
-Fly you out of my life
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-25
-</td>
-<td style="text-align:left;">
-Say whoa, time’s up on legendary
+That’s how I feel
 </td>
 </tr>
 </tbody>
