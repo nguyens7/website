@@ -29,16 +29,14 @@ authors: []
 
 
 
-<div class="figure">
-<img src="https://media.giphy.com/media/lOsqt7K4G9T3RNBT7D/giphy.gif" alt="Lizzo" />
-<p class="caption">Lizzo</p>
-</div>
+<p><img src="https://media.giphy.com/media/lOsqt7K4G9T3RNBT7D/giphy.gif" /></p>
 <p>Lizzo has had a meteoric rise of success with her album Cuz I Love you. I remember hearing “Truth Hurts” and being immediately hooked last summer when I served as a SROP mentor for undergraduate research students on campus. I decided to create an interesting blog post to analyze tweets with the <code>#lizzo</code> hashtag, do sentiment analysis on Cuz I Love you and even generate Lizzo lyrics by making our own Markov chain generator!</p>
 <pre class="r"><code>library(kableExtra)
 library(tidyverse) 
 library(tidytext)
 library(genius)
 library(rtweet)</code></pre>
+<p>We can use the <a href="https://rtweet.info/">rtweet</a> package by Michael Kearney to access Twitter’s API to query tweets.</p>
 <pre class="r"><code>Ltweet &lt;- search_tweets(
   &quot;#lizzo&quot;, n = 10000, include_rts = FALSE
 )
@@ -48,23 +46,24 @@ Ltweet</code></pre>
   ts_plot(&quot;3 hours&quot;) +
   theme_minimal() +
   theme(plot.title = element_text(face = &quot;bold&quot;)) +
-  ggplot2::labs(
+ labs(
     x = NULL, y = NULL,
     title = &quot;Frequency of #Lizzo Twitter statuses from the past 9 days&quot;,
     subtitle = &quot;Twitter status (tweet) counts aggregated using three-hour intervals&quot;,
-    caption = &quot;\nSource: Data collected from Twitter&#39;s REST API via rtweet&quot;
-  )</code></pre>
-<div class="figure">
-<img src="Lizzo_tweet_plot.png" alt="Lizzo tweet plot" />
-<p class="caption">Lizzo tweet plot</p>
-</div>
+    caption = &quot;\nSource: Data collected from Twitter&#39;s REST API via rtweet&quot;) +
+  cowplot::draw_image(&quot;featured.jpg&quot;,  scale = 0.3)</code></pre>
+<p><img src="Lizzo_tweet_plot.png" /></p>
+<p>We can see that there is a peak on February 18th, 2020 which corresponds to the 2020 BRIT awards. Let’s see if we can use <a href="https://wilkelab.org/cowplot/index.html">cowplot package</a> from Claus Wilke to add a picture of Lizzo at the BRIT awards.</p>
+<pre class="r"><code>library(cowplot)
+ggdraw() +
+ draw_plot(Lizzo_plot) +
+  draw_image(&quot;featured.jpg&quot;, hjust = -0.005, vjust = -0.2, scale = .25) +
+  draw_text(&quot;(Feb 18)&quot;, x = 0.38, y = 0.85, size = 8)</code></pre>
+<p><img src="Lizzo_tweet_BRIT_plot.png" /></p>
 <div id="using-genius-to-get-lyrics" class="section level3">
 <h3>Using Genius to get lyrics</h3>
 <p>We can use the <a href="https://github.com/JosiahParry/genius">genius package</a> to query music lyrics in R. We use the command <code>genius_lyrics()</code> and to anlayze the lyrics from a song and artist. For this example we can get the lyrics for “Mr. Brightside” by The Killers. Next we can use Julia Silge and David Robinson’s <a href="https://github.com/juliasilge/tidytext">tidytext package</a> to unnest tokens and obtain 2-word “ngrams”. We will use this later on to make our Markov chain generator.</p>
-<div class="figure">
-<img src="https://media.giphy.com/media/bbiEwsO8Ss4wM/giphy.gif" alt="The Killers" />
-<p class="caption">The Killers</p>
-</div>
+<p><img src="https://media.giphy.com/media/bbiEwsO8Ss4wM/giphy.gif" /></p>
 <pre class="r"><code>genius_lyrics(&quot;the killers&quot;, &quot;mr. brightside&quot;) %&gt;% 
     unnest_tokens(bigram, lyric, token = &quot;ngrams&quot;, n = 2) %&gt;%
     count(bigram) %&gt;% 
@@ -561,7 +560,7 @@ on my
        x = NULL) +
   coord_flip() +
   theme_minimal()</code></pre>
-<p><img src="/post/2020-02-24-generating-lizzo-lyrics/index_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<p><img src="/post/2020-02-24-generating-lizzo-lyrics/index_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 It seems like there’s plenty of of “love” and positive word sentiment in this album!</p>
 <div class="figure">
 <img src="https://media.giphy.com/media/IzinVgJa1SITQ44YNS/giphy.gif" alt="Lizzo love" />
@@ -612,29 +611,29 @@ Lizzo_corpus %&gt;%
   only_distinct = TRUE,
   return_message = TRUE) %&gt;% 
   kable()</code></pre>
-<pre><code>## textLizzoBot: Color me, color me, color me, color me, color me
-## textLizzoBot: They used to say goodbye
-## textLizzoBot: I thought that I didn&#39;t know it hurts sometimes
-## textLizzoBot: Will you be my lover
-## textLizzoBot: I thought I was ashamed
-## textLizzoBot: Sorry if my heart a little estrogen
-## textLizzoBot: You&#39;re either not with me or hate me
-## textLizzoBot: Who told you that you wasn&#39;t attractive
-## textLizzoBot: And I don&#39;t need no crown
-## textLizzoBot: Oh no, don&#39;t you get your man
-## textLizzoBot: Turn it up to the tempo
+<pre><code>## textLizzoBot: I think he wanna be prepared for you
+## textLizzoBot: Look, so if you by yourself, then go and buy yourself
+## textLizzoBot: Gotta blame it on my juice, blame it, blame it on my juice
+## textLizzoBot: Color me, color me, color me, color me, color me
+## textLizzoBot: Got you something from the bottle on the higher shelf
+## textLizzoBot: How your toes feel on a pedestal, bet on me, bet I will
+## textLizzoBot: Y&#39;all, who you think you got me dickmatized
+## textLizzoBot: I need to get a new guy, hello
+## textLizzoBot: Blame it on my juice, blame it, blame it on the Goose
+## textLizzoBot: Uh, put me on a plane
+## textLizzoBot: I know I&#39;m a queen, but I don&#39;t need to cry
+## textLizzoBot: And she never tell me to say?
 ## textLizzoBot: They used to say to keep a man, you had to know how to drrr it
-## textLizzoBot: Then you get your shit rocked
-## textLizzoBot: Only exes that I didn&#39;t know it was ending right there
-## textLizzoBot: Honestly, I don&#39;t need to apologize
-## textLizzoBot: If you feel like a girl, cry like a girl
-## textLizzoBot: Twerk skills up on these motherfuckers
-## textLizzoBot: Gotta blame it on my juice, blame it, blame it on the wall
-## textLizzoBot: Uh, look, listen, shut up and kiss me, oh
-## textLizzoBot: I wanna be way more than friends, what?
-## textLizzoBot: I think he got lost in my lingerie
-## textLizzoBot: Another round from the bottle on the low, I was love-impaired
-## textLizzoBot: That&#39;s how I feel</code></pre>
+## textLizzoBot: My cars ain&#39;t got no feelings
+## textLizzoBot: I know I&#39;m a queen, but I don&#39;t need to apologize
+## textLizzoBot: I thought I was a ho
+## textLizzoBot: Blame it on my juice, blame it, blame it on the low, I was perfect
+## textLizzoBot: They used to love a Gemini
+## textLizzoBot: I&#39;m about to add a little lost sometimes
+## textLizzoBot: Oh, if I try to change, hey
+## textLizzoBot: My love is your love be mine?
+## textLizzoBot: Got me standing in the proof
+## textLizzoBot: I think he got lost in my lingerie</code></pre>
 <table>
 <thead>
 <tr>
@@ -652,7 +651,7 @@ textLizzoBot
 1
 </td>
 <td style="text-align:left;">
-Color me, color me, color me, color me, color me
+I think he wanna be prepared for you
 </td>
 </tr>
 <tr>
@@ -660,7 +659,7 @@ Color me, color me, color me, color me, color me
 2
 </td>
 <td style="text-align:left;">
-They used to say goodbye
+Look, so if you by yourself, then go and buy yourself
 </td>
 </tr>
 <tr>
@@ -668,7 +667,7 @@ They used to say goodbye
 3
 </td>
 <td style="text-align:left;">
-I thought that I didn’t know it hurts sometimes
+Gotta blame it on my juice, blame it, blame it on my juice
 </td>
 </tr>
 <tr>
@@ -676,7 +675,7 @@ I thought that I didn’t know it hurts sometimes
 4
 </td>
 <td style="text-align:left;">
-Will you be my lover
+Color me, color me, color me, color me, color me
 </td>
 </tr>
 <tr>
@@ -684,7 +683,7 @@ Will you be my lover
 5
 </td>
 <td style="text-align:left;">
-I thought I was ashamed
+Got you something from the bottle on the higher shelf
 </td>
 </tr>
 <tr>
@@ -692,7 +691,7 @@ I thought I was ashamed
 6
 </td>
 <td style="text-align:left;">
-Sorry if my heart a little estrogen
+How your toes feel on a pedestal, bet on me, bet I will
 </td>
 </tr>
 <tr>
@@ -700,7 +699,7 @@ Sorry if my heart a little estrogen
 7
 </td>
 <td style="text-align:left;">
-You’re either not with me or hate me
+Y’all, who you think you got me dickmatized
 </td>
 </tr>
 <tr>
@@ -708,7 +707,7 @@ You’re either not with me or hate me
 8
 </td>
 <td style="text-align:left;">
-Who told you that you wasn’t attractive
+I need to get a new guy, hello
 </td>
 </tr>
 <tr>
@@ -716,7 +715,7 @@ Who told you that you wasn’t attractive
 9
 </td>
 <td style="text-align:left;">
-And I don’t need no crown
+Blame it on my juice, blame it, blame it on the Goose
 </td>
 </tr>
 <tr>
@@ -724,7 +723,7 @@ And I don’t need no crown
 10
 </td>
 <td style="text-align:left;">
-Oh no, don’t you get your man
+Uh, put me on a plane
 </td>
 </tr>
 <tr>
@@ -732,7 +731,7 @@ Oh no, don’t you get your man
 11
 </td>
 <td style="text-align:left;">
-Turn it up to the tempo
+I know I’m a queen, but I don’t need to cry
 </td>
 </tr>
 <tr>
@@ -740,7 +739,7 @@ Turn it up to the tempo
 12
 </td>
 <td style="text-align:left;">
-They used to say to keep a man, you had to know how to drrr it
+And she never tell me to say?
 </td>
 </tr>
 <tr>
@@ -748,7 +747,7 @@ They used to say to keep a man, you had to know how to drrr it
 13
 </td>
 <td style="text-align:left;">
-Then you get your shit rocked
+They used to say to keep a man, you had to know how to drrr it
 </td>
 </tr>
 <tr>
@@ -756,7 +755,7 @@ Then you get your shit rocked
 14
 </td>
 <td style="text-align:left;">
-Only exes that I didn’t know it was ending right there
+My cars ain’t got no feelings
 </td>
 </tr>
 <tr>
@@ -764,7 +763,7 @@ Only exes that I didn’t know it was ending right there
 15
 </td>
 <td style="text-align:left;">
-Honestly, I don’t need to apologize
+I know I’m a queen, but I don’t need to apologize
 </td>
 </tr>
 <tr>
@@ -772,7 +771,7 @@ Honestly, I don’t need to apologize
 16
 </td>
 <td style="text-align:left;">
-If you feel like a girl, cry like a girl
+I thought I was a ho
 </td>
 </tr>
 <tr>
@@ -780,7 +779,7 @@ If you feel like a girl, cry like a girl
 17
 </td>
 <td style="text-align:left;">
-Twerk skills up on these motherfuckers
+Blame it on my juice, blame it, blame it on the low, I was perfect
 </td>
 </tr>
 <tr>
@@ -788,7 +787,7 @@ Twerk skills up on these motherfuckers
 18
 </td>
 <td style="text-align:left;">
-Gotta blame it on my juice, blame it, blame it on the wall
+They used to love a Gemini
 </td>
 </tr>
 <tr>
@@ -796,7 +795,7 @@ Gotta blame it on my juice, blame it, blame it on the wall
 19
 </td>
 <td style="text-align:left;">
-Uh, look, listen, shut up and kiss me, oh
+I’m about to add a little lost sometimes
 </td>
 </tr>
 <tr>
@@ -804,7 +803,7 @@ Uh, look, listen, shut up and kiss me, oh
 20
 </td>
 <td style="text-align:left;">
-I wanna be way more than friends, what?
+Oh, if I try to change, hey
 </td>
 </tr>
 <tr>
@@ -812,7 +811,7 @@ I wanna be way more than friends, what?
 21
 </td>
 <td style="text-align:left;">
-I think he got lost in my lingerie
+My love is your love be mine?
 </td>
 </tr>
 <tr>
@@ -820,7 +819,7 @@ I think he got lost in my lingerie
 22
 </td>
 <td style="text-align:left;">
-Another round from the bottle on the low, I was love-impaired
+Got me standing in the proof
 </td>
 </tr>
 <tr>
@@ -828,7 +827,7 @@ Another round from the bottle on the low, I was love-impaired
 23
 </td>
 <td style="text-align:left;">
-That’s how I feel
+I think he got lost in my lingerie
 </td>
 </tr>
 </tbody>
@@ -840,6 +839,6 @@ Lizzo_meme &lt;- image_read(&#39;https://upload.wikimedia.org/wikipedia/commons/
   image_annotate(&quot;FLY YOU OUT OF MY LIFE&quot;, font = &quot;Helvetica&quot;,
                  size = 65, location = &quot;+5+350&quot;, color = &quot;white&quot; )
 print(Lizzo_meme)</code></pre>
-<p><img src="featured.png" width="400" /></p>
+<p><img src="Lizzo_meme.png" width="400" /></p>
 </div>
 </div>

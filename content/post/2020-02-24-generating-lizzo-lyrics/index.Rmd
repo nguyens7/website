@@ -27,7 +27,7 @@ tags:
 authors: []
 ---
 
-![Lizzo](https://media.giphy.com/media/lOsqt7K4G9T3RNBT7D/giphy.gif)
+![](https://media.giphy.com/media/lOsqt7K4G9T3RNBT7D/giphy.gif)
 
 Lizzo has had a meteoric rise of success with her album Cuz I Love you.  I remember hearing "Truth Hurts" and being immediately hooked last summer when I served as a SROP mentor for undergraduate research students on campus.  I decided to create an interesting blog post to analyze tweets with the `#lizzo` hashtag, do sentiment analysis on Cuz I Love you and even generate Lizzo lyrics by making our own Markov chain generator! 
 
@@ -39,7 +39,7 @@ library(genius)
 library(rtweet)
 ```
 
-
+We can use the [rtweet](https://rtweet.info/) package by Michael Kearney to access Twitter's API to query tweets.
 ```{r eval=FALSE, include=TRUE}
 Ltweet <- search_tweets(
   "#lizzo", n = 10000, include_rts = FALSE
@@ -50,7 +50,7 @@ Ltweet
 
 
 ```{r eval=FALSE, include=FALSE}
-# write_rds(Ltweet,here::here("data_files/Ltweet.rds"))
+write_rds(Ltweet,here::here("data_files/Ltweet.rds"))
 ```
 
 ```{r eval=FALSE, include=FALSE}
@@ -58,10 +58,39 @@ read_rds(here::here("data_files/Ltweet.rds"))
 ```
 
 
+```{r eval=FALSE, include=FALSE}
+library(magick)
+Lizzo_BRIT<- image_read('featured.jpg') %>% 
+  image_scale("800") 
 
+print(Lizzo_BRIT)
+```
 
 ```{r eval=FALSE, include=TRUE}
 Ltweet %>%
+  ts_plot("3 hours") +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold")) +
+ labs(
+    x = NULL, y = NULL,
+    title = "Frequency of #Lizzo Twitter statuses from the past 9 days",
+    subtitle = "Twitter status (tweet) counts aggregated using three-hour intervals",
+    caption = "\nSource: Data collected from Twitter's REST API via rtweet") +
+  cowplot::draw_image("featured.jpg",  scale = 0.3)
+
+```
+```{r eval=FALSE, include=FALSE}
+# ggsave(plot = Lizzo_plot, "Lizzo_tweet_plot.png", dpi = 600, units = "in", width = 6, height = 4)
+```
+
+![](Lizzo_tweet_plot.png)  
+
+
+We can see that there is a peak on February 18th, 2020 which corresponds to the 2020 BRIT awards.  Let's see if we can use [cowplot package](https://wilkelab.org/cowplot/index.html) from Claus Wilke to add a picture of Lizzo at the BRIT awards.
+
+
+```{r eval=FALSE, include=FALSE}
+Lizzo_plot <- Ltweet %>%
   ts_plot("3 hours") +
   theme_minimal() +
   theme(plot.title = element_text(face = "bold")) +
@@ -71,39 +100,38 @@ Ltweet %>%
     subtitle = "Twitter status (tweet) counts aggregated using three-hour intervals",
     caption = "\nSource: Data collected from Twitter's REST API via rtweet"
   )
+Lizzo_plot
+
+library(cowplot)
+Lizzo_BRIT_plot <- ggdraw() +
+ draw_plot(Lizzo_plot) +
+  draw_image("featured.jpg", hjust = -0.005, vjust = -0.2, scale = .25) +
+  draw_text("(Feb 18)", x = 0.38, y = 0.85, size = 8)
+
+Lizzo_BRIT_plot
+
+# ggsave(plot = Lizzo_BRIT_plot, "Lizzo_tweet_BRIT_plot.png",
+#        dpi = 600, width = 6, height = 4)
+
 ```
 
-![Lizzo tweet plot](Lizzo_tweet_plot.png) 
-
-```{r eval=FALSE, include=FALSE}
-# Lizzo_plot <- Ltweet %>%
-#   ts_plot("3 hours") +
-#   theme_minimal() +
-#   theme(plot.title = element_text(face = "bold")) +
-#   ggplot2::labs(
-#     x = NULL, y = NULL,
-#     title = "Frequency of #Lizzo Twitter statuses from the past 9 days",
-#     subtitle = "Twitter status (tweet) counts aggregated using three-hour intervals",
-#     caption = "\nSource: Data collected from Twitter's REST API via rtweet"
-#   )
-# Lizzo_plot
+```{r eval=FALSE, include=TRUE}
+library(cowplot)
+ggdraw() +
+ draw_plot(Lizzo_plot) +
+  draw_image("featured.jpg", hjust = -0.005, vjust = -0.2, scale = .25) +
+  draw_text("(Feb 18)", x = 0.38, y = 0.85, size = 8)
 ```
 
-```{r eval=FALSE, include=FALSE}
-# ggsave(plot = Lizzo_plot, "Lizzo_tweet_plot.png", dpi = 600, units = "in", width = 6, height = 4)
-```
-
-```{r eval = TRUE, include=FALSE}
-knitr::include_graphics("Lizzo_tweet_plot.png")
-```
+![](Lizzo_tweet_BRIT_plot.png) 
 
 ### Using Genius to get lyrics  
 
 We can use the [genius package](https://github.com/JosiahParry/genius) to query music lyrics in R.  We use the command `genius_lyrics()` and to anlayze the lyrics from a song and artist. For this example we can get the lyrics for "Mr. Brightside" by The Killers.  Next we can use Julia Silge and David Robinson's  [tidytext package](https://github.com/juliasilge/tidytext)  to unnest tokens and obtain 2-word "ngrams".  We will use this later on to make our Markov chain generator.
 
-![The Killers](https://media.giphy.com/media/bbiEwsO8Ss4wM/giphy.gif)
+![](https://media.giphy.com/media/bbiEwsO8Ss4wM/giphy.gif)
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 genius_lyrics("the killers", "mr. brightside") %>% 
     unnest_tokens(bigram, lyric, token = "ngrams", n = 2) %>%
     count(bigram) %>% 
@@ -237,11 +265,11 @@ print(Lizzo_meme)
 ```
 
 ```{r eval=FALSE, include=FALSE}
-# image_write(Lizzo_meme, path = "featured.png", format = "png", quality = 800)
+# image_write(Lizzo_meme, path = "Lizzo_meme.png", format = "png", quality = 800)
 
 ```
 
 ```{r  eval=TRUE, echo=FALSE}
-knitr::include_graphics("featured.png")
+knitr::include_graphics("Lizzo_meme.png")
 ```
 
