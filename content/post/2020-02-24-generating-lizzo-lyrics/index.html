@@ -1,0 +1,847 @@
+---
+title: "Generating Lizzo Lyrics"
+author: "Sean Nguyen"
+date: '2020-02-24'
+categories:
+- python
+- R
+- twitter
+- Markov Chains
+featured: yes
+image:
+  caption: Lizzo lyrics from Lizzobot (Markov chain generator)
+  focal_point: Center
+  placement: 2
+  preview_only: yes
+slug: generating-lizzo-lyrics
+subtitle: ''
+summary: ''
+tags:
+- text analysis
+- sentiment analysis
+- twitter
+- Lizzo
+- rtweet
+- lyrics
+- Markov Chains
+authors: []
+---
+
+
+
+<div class="figure">
+<img src="https://media.giphy.com/media/lOsqt7K4G9T3RNBT7D/giphy.gif" alt="Lizzo" />
+<p class="caption">Lizzo</p>
+</div>
+<p>Lizzo has had a meteoric rise of success with her album Cuz I Love you. I remember hearing “Truth Hurts” and being immediately hooked last summer when I served as a SROP mentor for undergraduate research students on campus. I decided to create an interesting blog post to analyze tweets with the <code>#lizzo</code> hashtag, do sentiment analysis on Cuz I Love you and even generate Lizzo lyrics by making our own Markov chain generator!</p>
+<pre class="r"><code>library(kableExtra)
+library(tidyverse) 
+library(tidytext)
+library(genius)
+library(rtweet)</code></pre>
+<pre class="r"><code>Ltweet &lt;- search_tweets(
+  &quot;#lizzo&quot;, n = 10000, include_rts = FALSE
+)
+
+Ltweet</code></pre>
+<pre class="r"><code>Ltweet %&gt;%
+  ts_plot(&quot;3 hours&quot;) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = &quot;bold&quot;)) +
+  ggplot2::labs(
+    x = NULL, y = NULL,
+    title = &quot;Frequency of #Lizzo Twitter statuses from past 9 days&quot;,
+    subtitle = &quot;Twitter status (tweet) counts aggregated using three-hour intervals&quot;,
+    caption = &quot;\nSource: Data collected from Twitter&#39;s REST API via rtweet&quot;
+  )</code></pre>
+<div class="figure">
+<img src="Lizzo_tweet_plot.png" alt="Lizzo tweet plot" />
+<p class="caption">Lizzo tweet plot</p>
+</div>
+<div id="using-genius-to-get-lyrics" class="section level2">
+<h2>Using Genius to get lyrics</h2>
+<p>We can use the <a href="https://github.com/JosiahParry/genius">genius package</a> to query music lyrics in R. We use the command <code>genius_lyrics()</code> and to anlayze the lyrics from a song and artist. Next we can use Julia Silge and David Robinson’s <a href="https://github.com/juliasilge/tidytext">tidytext package</a> to unnest tokens and obtain 2-word “ngrams”. We will use this later on to make our Markov chain generator.</p>
+<pre class="r"><code>genius_lyrics(&quot;the killers&quot;, &quot;mr. brightside&quot;) %&gt;% 
+    unnest_tokens(bigram, lyric, token = &quot;ngrams&quot;, n = 2) %&gt;%
+    count(bigram) %&gt;% 
+    arrange(desc(n)) %&gt;% 
+    head(10) %&gt;% 
+    kable() </code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+bigram
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+a kiss
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+and she’s
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+i never
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+it was
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+only a
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+was only
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a cab
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a drag
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a smoke
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+all in
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+</tbody>
+</table>
+<p>Next we can use the sentiment lexicon from <a href="https://juliasilge.github.io/tidytext/reference/sentiments.html">Bing Liu et al</a> which is included in the tidytext package. We will use this to ‘inner_join’ with our lyric collection.</p>
+<pre class="r"><code>bing &lt;- get_sentiments(&quot;bing&quot;)
+
+bing %&gt;% 
+  head(10) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+word
+</th>
+<th style="text-align:left;">
+sentiment
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2-faces
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abnormal
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abolish
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abominable
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abominably
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abominate
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abomination
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abort
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aborted
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aborts
+</td>
+<td style="text-align:left;">
+negative
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="getting-cuz-i-love-you-lyrics" class="section level2">
+<h2>Getting Cuz I Love You lyrics</h2>
+<p>Now that we learned how more about the <a href="https://github.com/JosiahParry/genius">genius package</a> we can use the ’genius_album()` command to get the lyrics from Cuz I Love You.</p>
+<pre class="r"><code>Lizzo &lt;- genius_album(artist = &quot;Lizzo&quot;, album = &quot;Cuz I Love You&quot;)
+
+Lizzo %&gt;% 
+  head(10) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+track_title
+</th>
+<th style="text-align:right;">
+track_n
+</th>
+<th style="text-align:right;">
+line
+</th>
+<th style="text-align:left;">
+lyric
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Cuz I Love You
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+I’m cryin’ ’cause I love you, oh
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cuz I Love You
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+(Ya ya ya, ya ya, ya ya)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cuz I Love You
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Never been in love before
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cuz I Love You
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+What the fuck are fucking feelings, yo?
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cuz I Love You
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Once upon a time, I was a ho
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cuz I Love You
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+I don’t even wanna ho no mo’
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cuz I Love You
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Got you something from the liquor store
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cuz I Love You
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+Little bit of Lizzo and some Mo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cuz I Love You
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Tryna open up a little mo’
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cuz I Love You
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Sorry if my heart a little slow
+</td>
+</tr>
+</tbody>
+</table>
+<p>Now we can get the 2-word “ngrams”.</p>
+<pre class="r"><code>Lizzo %&gt;% 
+    unnest_tokens(bigram, lyric, token = &quot;ngrams&quot;, n = 2) %&gt;%
+    count(bigram) %&gt;% 
+    arrange(desc(n)) %&gt;% 
+   head(10) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+bigram
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ya ya
+</td>
+<td style="text-align:right;">
+38
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+like a
+</td>
+<td style="text-align:right;">
+36
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+a girl
+</td>
+<td style="text-align:right;">
+33
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+yeah yeah
+</td>
+<td style="text-align:right;">
+31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+blame it
+</td>
+<td style="text-align:right;">
+29
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ya ee
+</td>
+<td style="text-align:right;">
+28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+the one
+</td>
+<td style="text-align:right;">
+24
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+it on
+</td>
+<td style="text-align:right;">
+23
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+love love
+</td>
+<td style="text-align:right;">
+23
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+on my
+</td>
+<td style="text-align:right;">
+23
+</td>
+</tr>
+</tbody>
+</table>
+<div id="lizzo-cuz-i-love-you-sentiment-analysis" class="section level3">
+<h3>Lizzo Cuz I Love You sentiment analysis</h3>
+<p>Next we can take the Lizzo lyrics and get rid of stop words by using an<code>anti_join()</code> and <code>inner_join()</code> with the bing sentiment dataframe and add up the top 10 ngrams and visualize it.</p>
+<pre class="r"><code>Lizzo %&gt;% 
+  unnest_tokens(word, lyric) %&gt;%
+  anti_join(stop_words) %&gt;%
+  inner_join(bing) %&gt;%
+  count(word, sentiment, sort = TRUE) %&gt;%
+  group_by(sentiment) %&gt;%
+  top_n(10) %&gt;%
+  ungroup() %&gt;%
+  mutate(word = str_replace_all(word, &quot;fuck&quot;, &quot;f*ck&quot;), 
+         word = str_replace_all(word, &quot;bitch&quot;, &quot;b*tch&quot;),
+         word = reorder(word, n),
+         word = fct_lump(word, n = 10)) %&gt;%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = &quot;free_y&quot;) +
+  labs(y = &quot;Cuz I Love You: Words that contribute the most to positive and negative sentiment&quot;,
+       x = NULL) +
+  coord_flip() +
+  theme_minimal()</code></pre>
+<p><img src="/post/2020-02-24-generating-lizzo-lyrics/index_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+It seems like there’s plenty of of “love” and positive word sentiment in this album!</p>
+<div class="figure">
+<img src="https://media.giphy.com/media/IzinVgJa1SITQ44YNS/giphy.gif" alt="Lizzo love" />
+<p class="caption">Lizzo love</p>
+</div>
+</div>
+</div>
+<div id="markovify" class="section level1">
+<h1>Markovify</h1>
+<p>We can use the python <a href="https://github.com/jsvine/markovify">markovify package</a> and use the <a href="https://rstudio.github.io/reticulate/">reticulate</a> to use python in our R session.</p>
+<pre class="r"><code># library(reticulate)
+# use_python(&quot;/usr/local/bin/python&quot;)
+# py_install(&quot;markovify&quot;)</code></pre>
+<p>Alex Bresler has ported markovify to an R packaged named <a href="https://github.com/abresler/markovifyR">Markovifyr</a>.</p>
+<pre class="r"><code># devtools::install_github(&quot;abresler/markovifyR&quot;)
+library(markovifyR)</code></pre>
+<p>First get the a corpus of lyrics only.</p>
+<pre class="r"><code>Lizzo_corpus &lt;- Lizzo %&gt;% 
+  pull(lyric)
+
+Lizzo_corpus %&gt;% 
+  head(10) </code></pre>
+<pre><code>##  [1] &quot;I&#39;m cryin&#39; &#39;cause I love you, oh&quot;       
+##  [2] &quot;(Ya ya ya, ya ya, ya ya)&quot;               
+##  [3] &quot;Never been in love before&quot;              
+##  [4] &quot;What the fuck are fucking feelings, yo?&quot;
+##  [5] &quot;Once upon a time, I was a ho&quot;           
+##  [6] &quot;I don&#39;t even wanna ho no mo&#39;&quot;           
+##  [7] &quot;Got you something from the liquor store&quot;
+##  [8] &quot;Little bit of Lizzo and some Mo&quot;        
+##  [9] &quot;Tryna open up a little mo&#39;&quot;             
+## [10] &quot;Sorry if my heart a little slow&quot;</code></pre>
+<p>Now we can create a Markov model with our corpus and specify the overlap.</p>
+<pre class="r"><code>Lizzo_markov_model &lt;-
+  generate_markovify_model(
+    input_text = Lizzo_corpus,
+    markov_state_size = 2L,
+    max_overlap_total = 25,
+    max_overlap_ratio = .85
+  )</code></pre>
+<div id="generate-lyrics" class="section level2">
+<h2>Generate lyrics!</h2>
+<pre class="r"><code>markovify_text(
+  markov_model = Lizzo_markov_model,
+  maximum_sentence_length = NULL,
+  output_column_name = &#39;textLizzoBot&#39;,
+  count = 25,
+  tries = 100,
+  only_distinct = TRUE,
+  return_message = TRUE) %&gt;% 
+  kable()</code></pre>
+<pre><code>## textLizzoBot: If I try to tell you then you real like a girl
+## textLizzoBot: And I don&#39;t need no crown
+## textLizzoBot: I know I&#39;m a queen, but I don&#39;t need to cry
+## textLizzoBot: Look, so if you are the love of my life
+## textLizzoBot: Somebody come get your man
+## textLizzoBot: Mirror, mirror on the low, I was a ho
+## textLizzoBot: Got me standing in the proof
+## textLizzoBot: Smile if I try to tell you, then you try to hurt me
+## textLizzoBot: Yeah, you can buy yourself
+## textLizzoBot: Wanna put you on the Goose
+## textLizzoBot: Fuck it up, fuck it up to the tempo
+## textLizzoBot: Twerk skills up on these motherfuckers
+## textLizzoBot: They used to say goodbye
+## textLizzoBot: Love looks better in color
+## textLizzoBot: You&#39;re either not with me or hate me
+## textLizzoBot: Say whoa, something like a girl
+## textLizzoBot: Once upon a time, I was ashamed
+## textLizzoBot: You can be my own type
+## textLizzoBot: Y&#39;all, who you think you got me dickmatized
+## textLizzoBot: Will you be my own type
+## textLizzoBot: And she never tell me to say?
+## textLizzoBot: Got you something from the bottle on the wall
+## textLizzoBot: How your toes feel on a plane
+## textLizzoBot: I think he wanna knuckle up</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+idRow
+</th>
+<th style="text-align:left;">
+textLizzoBot
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+If I try to tell you then you real like a girl
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+And I don’t need no crown
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+I know I’m a queen, but I don’t need to cry
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Look, so if you are the love of my life
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Somebody come get your man
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Mirror, mirror on the low, I was a ho
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Got me standing in the proof
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+Smile if I try to tell you, then you try to hurt me
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Yeah, you can buy yourself
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Wanna put you on the Goose
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+Fuck it up, fuck it up to the tempo
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+Twerk skills up on these motherfuckers
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+They used to say goodbye
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+Love looks better in color
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+You’re either not with me or hate me
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+Say whoa, something like a girl
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+Once upon a time, I was ashamed
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+You can be my own type
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+Y’all, who you think you got me dickmatized
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:left;">
+Will you be my own type
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+And she never tell me to say?
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+Got you something from the bottle on the wall
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:left;">
+How your toes feel on a plane
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+I think he wanna knuckle up
+</td>
+</tr>
+</tbody>
+</table>
+<p>Now we can make a meme using the lyrics generated from our Lizzobot Markov chain generator.</p>
+<pre class="r"><code>library(magick)
+Lizzo_meme &lt;- image_read(&#39;https://upload.wikimedia.org/wikipedia/commons/0/0f/Lizzo_-_Palace_Theatre_-_St._Paul_%2827266085317%29.jpg&#39;) %&gt;% 
+  image_scale(&quot;800&quot;) %&gt;% 
+  image_annotate(&quot;FLY YOU OUT OF MY LIFE&quot;, font = &quot;Helvetica&quot;,
+                 size = 65, location = &quot;+5+350&quot;, color = &quot;white&quot; )
+print(Lizzo_meme)</code></pre>
+<p><img src="featured.png" width="400" /></p>
+</div>
+</div>
