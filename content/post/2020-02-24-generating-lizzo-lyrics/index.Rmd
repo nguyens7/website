@@ -198,7 +198,7 @@ Lizzo %>%
 ```
 It seems like there's plenty of of "love" and positive word sentiment in this album!
 
-![Lizzo love](https://media.giphy.com/media/IzinVgJa1SITQ44YNS/giphy.gif)  
+![](https://media.giphy.com/media/IzinVgJa1SITQ44YNS/giphy.gif)  
 
 
 # Markovify
