@@ -67,7 +67,7 @@ Ltweet %>%
   theme(plot.title = element_text(face = "bold")) +
   ggplot2::labs(
     x = NULL, y = NULL,
-    title = "Frequency of #Lizzo Twitter statuses from past 9 days",
+    title = "Frequency of #Lizzo Twitter statuses from the past 9 days",
     subtitle = "Twitter status (tweet) counts aggregated using three-hour intervals",
     caption = "\nSource: Data collected from Twitter's REST API via rtweet"
   )
@@ -82,7 +82,7 @@ Ltweet %>%
 #   theme(plot.title = element_text(face = "bold")) +
 #   ggplot2::labs(
 #     x = NULL, y = NULL,
-#     title = "Frequency of #Lizzo Twitter statuses from past 9 days",
+#     title = "Frequency of #Lizzo Twitter statuses from the past 9 days",
 #     subtitle = "Twitter status (tweet) counts aggregated using three-hour intervals",
 #     caption = "\nSource: Data collected from Twitter's REST API via rtweet"
 #   )

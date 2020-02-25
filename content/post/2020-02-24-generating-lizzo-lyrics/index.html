@@ -50,7 +50,7 @@ Ltweet</code></pre>
   theme(plot.title = element_text(face = &quot;bold&quot;)) +
   ggplot2::labs(
     x = NULL, y = NULL,
-    title = &quot;Frequency of #Lizzo Twitter statuses from past 9 days&quot;,
+    title = &quot;Frequency of #Lizzo Twitter statuses from the past 9 days&quot;,
     subtitle = &quot;Twitter status (tweet) counts aggregated using three-hour intervals&quot;,
     caption = &quot;\nSource: Data collected from Twitter&#39;s REST API via rtweet&quot;
   )</code></pre>
@@ -605,30 +605,31 @@ Lizzo_corpus %&gt;%
   only_distinct = TRUE,
   return_message = TRUE) %&gt;% 
   kable()</code></pre>
-<pre><code>## textLizzoBot: If I try to tell you then you real like a girl
-## textLizzoBot: And I don&#39;t need no crown
-## textLizzoBot: I know I&#39;m a queen, but I don&#39;t need to cry
-## textLizzoBot: Look, so if you are the love of my life
-## textLizzoBot: Somebody come get your man
-## textLizzoBot: Mirror, mirror on the low, I was a ho
-## textLizzoBot: Got me standing in the proof
-## textLizzoBot: Smile if I try to tell you, then you try to hurt me
-## textLizzoBot: Yeah, you can buy yourself
-## textLizzoBot: Wanna put you on the Goose
-## textLizzoBot: Fuck it up, fuck it up to the tempo
-## textLizzoBot: Twerk skills up on these motherfuckers
+<pre><code>## textLizzoBot: All the fly girls head to the tempo
+## textLizzoBot: I&#39;m the pudding in the rain
+## textLizzoBot: I&#39;m about to add a little slow
+## textLizzoBot: Color me, color me, color me, color me, color me, color me, color me, color me
 ## textLizzoBot: They used to say goodbye
-## textLizzoBot: Love looks better in color
-## textLizzoBot: You&#39;re either not with me or hate me
-## textLizzoBot: Say whoa, something like a girl
-## textLizzoBot: Once upon a time, I was ashamed
-## textLizzoBot: You can be my own type
+## textLizzoBot: Say whoa, something like a crystal ball
+## textLizzoBot: You know it was ending right there
+## textLizzoBot: Yeah, you can buy yourself
+## textLizzoBot: If you think you sassing?
+## textLizzoBot: Gotta blame it on my juice, blame it, blame it on my juice, blame it, blame it on the low, I was a ho
+## textLizzoBot: Trust, baby, you can&#39;t make me crescendo, I&#39;m going up
+## textLizzoBot: Ooh, can I get a little lost sometimes
+## textLizzoBot: And I gotta be my lover
+## textLizzoBot: Turn it up to the tempo
+## textLizzoBot: That&#39;s exactly how I roll
+## textLizzoBot: Shit, fuck, I didn&#39;t care
+## textLizzoBot: So I figured out I gotta be my lover
+## textLizzoBot: I&#39;m cryin&#39;, I&#39;m cryin&#39;, hey
+## textLizzoBot: Please step away from the liquor store
+## textLizzoBot: Now watch me do it for you just in case
+## textLizzoBot: So I lounge around in my fucking chromosomes
+## textLizzoBot: So if you are the love of my life
 ## textLizzoBot: Y&#39;all, who you think you got me dickmatized
-## textLizzoBot: Will you be my own type
-## textLizzoBot: And she never tell me to say?
-## textLizzoBot: Got you something from the bottle on the wall
-## textLizzoBot: How your toes feel on a plane
-## textLizzoBot: I think he wanna knuckle up</code></pre>
+## textLizzoBot: Fly you out of my life
+## textLizzoBot: Say whoa, time&#39;s up on legendary</code></pre>
 <table>
 <thead>
 <tr>
@@ -646,7 +647,7 @@ textLizzoBot
 1
 </td>
 <td style="text-align:left;">
-If I try to tell you then you real like a girl
+All the fly girls head to the tempo
 </td>
 </tr>
 <tr>
@@ -654,7 +655,7 @@ If I try to tell you then you real like a girl
 2
 </td>
 <td style="text-align:left;">
-And I don’t need no crown
+I’m the pudding in the rain
 </td>
 </tr>
 <tr>
@@ -662,7 +663,7 @@ And I don’t need no crown
 3
 </td>
 <td style="text-align:left;">
-I know I’m a queen, but I don’t need to cry
+I’m about to add a little slow
 </td>
 </tr>
 <tr>
@@ -670,7 +671,7 @@ I know I’m a queen, but I don’t need to cry
 4
 </td>
 <td style="text-align:left;">
-Look, so if you are the love of my life
+Color me, color me, color me, color me, color me, color me, color me, color me
 </td>
 </tr>
 <tr>
@@ -678,7 +679,7 @@ Look, so if you are the love of my life
 5
 </td>
 <td style="text-align:left;">
-Somebody come get your man
+They used to say goodbye
 </td>
 </tr>
 <tr>
@@ -686,7 +687,7 @@ Somebody come get your man
 6
 </td>
 <td style="text-align:left;">
-Mirror, mirror on the low, I was a ho
+Say whoa, something like a crystal ball
 </td>
 </tr>
 <tr>
@@ -694,7 +695,7 @@ Mirror, mirror on the low, I was a ho
 7
 </td>
 <td style="text-align:left;">
-Got me standing in the proof
+You know it was ending right there
 </td>
 </tr>
 <tr>
@@ -702,7 +703,7 @@ Got me standing in the proof
 8
 </td>
 <td style="text-align:left;">
-Smile if I try to tell you, then you try to hurt me
+Yeah, you can buy yourself
 </td>
 </tr>
 <tr>
@@ -710,7 +711,7 @@ Smile if I try to tell you, then you try to hurt me
 9
 </td>
 <td style="text-align:left;">
-Yeah, you can buy yourself
+If you think you sassing?
 </td>
 </tr>
 <tr>
@@ -718,7 +719,7 @@ Yeah, you can buy yourself
 10
 </td>
 <td style="text-align:left;">
-Wanna put you on the Goose
+Gotta blame it on my juice, blame it, blame it on my juice, blame it, blame it on the low, I was a ho
 </td>
 </tr>
 <tr>
@@ -726,7 +727,7 @@ Wanna put you on the Goose
 11
 </td>
 <td style="text-align:left;">
-Fuck it up, fuck it up to the tempo
+Trust, baby, you can’t make me crescendo, I’m going up
 </td>
 </tr>
 <tr>
@@ -734,7 +735,7 @@ Fuck it up, fuck it up to the tempo
 12
 </td>
 <td style="text-align:left;">
-Twerk skills up on these motherfuckers
+Ooh, can I get a little lost sometimes
 </td>
 </tr>
 <tr>
@@ -742,7 +743,7 @@ Twerk skills up on these motherfuckers
 13
 </td>
 <td style="text-align:left;">
-They used to say goodbye
+And I gotta be my lover
 </td>
 </tr>
 <tr>
@@ -750,7 +751,7 @@ They used to say goodbye
 14
 </td>
 <td style="text-align:left;">
-Love looks better in color
+Turn it up to the tempo
 </td>
 </tr>
 <tr>
@@ -758,7 +759,7 @@ Love looks better in color
 15
 </td>
 <td style="text-align:left;">
-You’re either not with me or hate me
+That’s exactly how I roll
 </td>
 </tr>
 <tr>
@@ -766,7 +767,7 @@ You’re either not with me or hate me
 16
 </td>
 <td style="text-align:left;">
-Say whoa, something like a girl
+Shit, fuck, I didn’t care
 </td>
 </tr>
 <tr>
@@ -774,7 +775,7 @@ Say whoa, something like a girl
 17
 </td>
 <td style="text-align:left;">
-Once upon a time, I was ashamed
+So I figured out I gotta be my lover
 </td>
 </tr>
 <tr>
@@ -782,7 +783,7 @@ Once upon a time, I was ashamed
 18
 </td>
 <td style="text-align:left;">
-You can be my own type
+I’m cryin’, I’m cryin’, hey
 </td>
 </tr>
 <tr>
@@ -790,7 +791,7 @@ You can be my own type
 19
 </td>
 <td style="text-align:left;">
-Y’all, who you think you got me dickmatized
+Please step away from the liquor store
 </td>
 </tr>
 <tr>
@@ -798,7 +799,7 @@ Y’all, who you think you got me dickmatized
 20
 </td>
 <td style="text-align:left;">
-Will you be my own type
+Now watch me do it for you just in case
 </td>
 </tr>
 <tr>
@@ -806,7 +807,7 @@ Will you be my own type
 21
 </td>
 <td style="text-align:left;">
-And she never tell me to say?
+So I lounge around in my fucking chromosomes
 </td>
 </tr>
 <tr>
@@ -814,7 +815,7 @@ And she never tell me to say?
 22
 </td>
 <td style="text-align:left;">
-Got you something from the bottle on the wall
+So if you are the love of my life
 </td>
 </tr>
 <tr>
@@ -822,7 +823,7 @@ Got you something from the bottle on the wall
 23
 </td>
 <td style="text-align:left;">
-How your toes feel on a plane
+Y’all, who you think you got me dickmatized
 </td>
 </tr>
 <tr>
@@ -830,7 +831,15 @@ How your toes feel on a plane
 24
 </td>
 <td style="text-align:left;">
-I think he wanna knuckle up
+Fly you out of my life
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+Say whoa, time’s up on legendary
 </td>
 </tr>
 </tbody>
