@@ -196,7 +196,7 @@ Lizzo %>%
   theme_minimal()
 
 ```
-It seems like there's plenty of of "love" and positive word sentiment in this album!
+It seems like there's plenty of "love" and positive word sentiment in this album!
 
 ![](https://media.giphy.com/media/IzinVgJa1SITQ44YNS/giphy.gif)  
 
