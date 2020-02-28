@@ -74,7 +74,6 @@ user_groups:
 I’m a graduate student in the Petroff lab at MSU and the author/maintaner of the open source [tidyNano package](https://nguyens7.github.io/tidyNano/).  I provide all the code and data to all my blogposts where I explore interesting datasets using a variety of different tools. When I’m not in the lab, I enjoy cooking, photography, and reading. #rstats 📈♟️🥘   
 
   
-This site was made with [blogdown](https://bookdown.org/yihui/blogdown/) and [Hugo](https://gohugo.io/),  and  deployed with [Netlify](https://www.netlify.com/).    
-If you find my blog useful, [you can buy me a ☕️ on Ko-fi.](https://ko-fi.com/O4O71BDFZ)
+This site was made with [blogdown](https://bookdown.org/yihui/blogdown/) and [Hugo](https://gohugo.io/),  and  deployed with [Netlify](https://www.netlify.com/). All the data and code for this site is available on [Github](https://github.com/nguyens7/website).  If you find my blog useful, [you can buy me a ☕️ on Ko-fi.](https://ko-fi.com/O4O71BDFZ)
 
 
