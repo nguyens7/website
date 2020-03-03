@@ -1,0 +1,136 @@
+---
+title: "When's The Best Time to Ride Avatar Flight of Passage?"
+author: "Sean Nguyen"
+date: '2020-03-02'
+categories:
+- Disney
+- Time Series
+- Forecasting
+
+image:
+  caption: View of Avatar Flight of Passage queue
+  focal_point: Center
+  placement: 2
+  preview_only: no
+projects: []
+slug: avatar-flight-of-passage
+subtitle: ''
+summary: ''
+tags:
+- Disney
+- Facebook
+- Prophet
+- Time Series Analysis
+- Forecasting
+- Prediction
+authors: []
+---
+
+
+
+<p>Avatar Flight of Passage is my favorite ride in all of Disney World, I remember waiting close to four hours to ride the ride in December 2017 and I would do it again in a heartbeat. This past December I was able to visit Disney World again and managed to get a hold of some fast passes for the ride which made the experience much better. While I was waiting in line for the ride I wondered what the optimal time to queue up for the ride and wanted to see if I could analyze wait time data. In this post I’ll do some time series forecasting using Facebook’s open source <a href="https://facebook.github.io/prophet/">Prophet project</a> which is used in production for time series forecasting.</p>
+<p align="center">
+<img  src="https://media.giphy.com/media/IgvDT9ucE1tlcgvgO2/giphy.gif">
+</p>
+<pre class="r"><code>library(tidyverse)
+library(prophet)</code></pre>
+<div id="import-data" class="section level3">
+<h3>Import data</h3>
+<p>I was able to get the ride wait time data from the folks at <a href="https://touringplans.com/walt-disney-world/crowd-calendar#DataSets">touringplans.com</a>.</p>
+<pre class="r"><code>df &lt;- read_csv(here::here(&quot;data_files/flight_of_passage.csv&quot;)) 
+
+df</code></pre>
+<pre><code>## # A tibble: 122,247 x 4
+##    date       datetime            SPOSTMIN SACTMIN
+##    &lt;chr&gt;      &lt;dttm&gt;                 &lt;dbl&gt;   &lt;dbl&gt;
+##  1 05/26/2017 2017-05-26 09:06:38     -999      NA
+##  2 05/26/2017 2017-05-26 09:10:12        5      NA
+##  3 05/26/2017 2017-05-26 09:17:09       60      NA
+##  4 05/26/2017 2017-05-26 09:24:07       60      NA
+##  5 05/26/2017 2017-05-26 09:30:10       60      NA
+##  6 05/26/2017 2017-05-26 09:38:10       45      NA
+##  7 05/26/2017 2017-05-26 09:45:32       45      NA
+##  8 05/26/2017 2017-05-26 09:53:14       45      NA
+##  9 05/26/2017 2017-05-26 09:10:11       NA      47
+## 10 05/26/2017 2017-05-26 09:59:07       45      NA
+## # … with 122,237 more rows</code></pre>
+</div>
+<div id="data-cleaning" class="section level3">
+<h3>Data cleaning</h3>
+<p>Prophet requires a datetime column labeled <code>ds</code> and numerical <code>y</code> column. We can clean up the data by filtering out missing values and times when the ride was closed indicated by <code>-999</code>.</p>
+<pre class="r"><code>df2 &lt;- df %&gt;% 
+  select(ds = datetime, y = SPOSTMIN,-date,-SACTMIN) %&gt;% 
+  filter(!y %in% c(-999) &amp;
+           !is.na(y))
+
+df2</code></pre>
+<pre><code>## # A tibble: 115,279 x 2
+##    ds                      y
+##    &lt;dttm&gt;              &lt;dbl&gt;
+##  1 2017-05-26 09:10:12     5
+##  2 2017-05-26 09:17:09    60
+##  3 2017-05-26 09:24:07    60
+##  4 2017-05-26 09:30:10    60
+##  5 2017-05-26 09:38:10    45
+##  6 2017-05-26 09:45:32    45
+##  7 2017-05-26 09:53:14    45
+##  8 2017-05-26 09:59:07    45
+##  9 2017-05-26 10:17:07    45
+## 10 2017-05-26 10:24:08    55
+## # … with 115,269 more rows</code></pre>
+</div>
+<div id="using-prophet" class="section level3">
+<h3>Using prophet</h3>
+<p>We can call the <code>prophet()</code> function to run the model fitting API on our data and it returns a model object.</p>
+<pre class="r"><code>df_m &lt;- df2 %&gt;%
+  prophet()
+
+df_m</code></pre>
+</div>
+<div id="generate-future-dates" class="section level3">
+<h3>Generate future dates</h3>
+<p>Next we can use the <code>make_future_dataframe()</code> on our <code>df_m</code> model object to create a dataframe containing forecast date data.</p>
+<pre class="r"><code>future &lt;- make_future_dataframe(df_m, periods = 365)
+head(future)</code></pre>
+<pre class="r"><code># write_rds(future, &quot;future.rds&quot;)
+future &lt;- read_rds(here::here(&quot;data_files/future.rds&quot;))
+
+future</code></pre>
+</div>
+<div id="generating-a-forecast" class="section level3">
+<h3>Generating a forecast</h3>
+<p>The next step is to use <code>predict()</code> function to create a forecast of our model of the generated <code>future</code> dates.</p>
+<pre class="r"><code>forecast &lt;- predict(df_m, future)
+head(forecast)</code></pre>
+<pre class="r"><code># write_rds(forecast, &quot;forecast.rds&quot;)
+
+forecast &lt;- read_rds(here::here(&quot;data_files/forecast.rds&quot;))
+
+forecast</code></pre>
+</div>
+<div id="plotting" class="section level3">
+<h3>Plotting</h3>
+<p>We can use <code>dyplot.prophet()</code> to create an interactive dyplot but I have included a static picture here so it loads faster on this site. We can see that on the Y axis overall that the overall wait time trend appears to be ~120 minutes. Prophet created a time series forecast as indicated by the blue line and as we expect the error increases as you predict more in the future.</p>
+<pre class="r"><code>FOP_dyplot &lt;- dyplot.prophet(df_m, forecast)
+
+FOP_dyplot</code></pre>
+<p><img src="fig01_forecast_plot.png" width="567" /></p>
+</div>
+<div id="plotting-the-components" class="section level3">
+<h3>Plotting the components</h3>
+<p>One of the neatest features of Prophet is the ability to look at different components of the data. We can use <code>prophet_plot_components()</code> to four plots including, overall trends, weekly,yearly, and daily trends.</p>
+<pre class="r"><code>FOP_component_plot &lt;- prophet_plot_components(df_m, forecast)
+
+FOP_component_plot</code></pre>
+<p>We can see in the trend plot that we can confirm that the overall trend is that wait times are quite steady for Avatar Flight of Passage.</p>
+<p><img src="fig02_trend_plot.png" width="576" /></p>
+<p>When we look at the weekly plot we can see up to a 10% reduction in wait time on Wednesdays!
+<img src="fig03_weekly_plot.png" width="576" /></p>
+<p>Yearly data suggests the best time to ride the ride in September which seems to correspond to the start of school for most students in the US. I usually go to Disney World around the holidays and as we expect it is definitely one of the busiest times of the year. It’s nice to see that the data reflect what we intuitively think.
+<img src="fig04_yearly_plot.png" width="576" />
+The hourly level data suggests that getting to Animal Kingdom right when it opens and just before the parks close seem to be the best time to queue up for the ride.
+<img src="fig05_daily_plot.png" width="576" />
+### TL;DR</p>
+<p>It appears the best time to ride Avatar Flight of Passage is right when the park opens on a Wednesday in September! If you can’t manage to go to Disney’s Animal Kingdom, you can still enjoy the beautiful scenery of the World of Pandora while you wait!
+<img src="featured2.jpeg" width="645" /></p>
+</div>
