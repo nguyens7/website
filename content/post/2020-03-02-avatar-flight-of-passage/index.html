@@ -86,27 +86,21 @@ df2</code></pre>
   prophet()
 
 df_m</code></pre>
+<p><img src="df_prophet.png" width="954" /></p>
 </div>
 <div id="generate-future-dates" class="section level3">
 <h3>Generate future dates</h3>
 <p>Next we can use the <code>make_future_dataframe()</code> on our <code>df_m</code> model object to create a dataframe containing forecast date data.</p>
 <pre class="r"><code>future &lt;- make_future_dataframe(df_m, periods = 365)
 head(future)</code></pre>
-<pre class="r"><code># write_rds(future, &quot;future.rds&quot;)
-future &lt;- read_rds(here::here(&quot;data_files/future.rds&quot;))
-
-future</code></pre>
+<p><img src="df_future.png" width="892" /></p>
 </div>
 <div id="generating-a-forecast" class="section level3">
 <h3>Generating a forecast</h3>
 <p>The next step is to use <code>predict()</code> function to create a forecast of our model of the generated <code>future</code> dates.</p>
 <pre class="r"><code>forecast &lt;- predict(df_m, future)
 head(forecast)</code></pre>
-<pre class="r"><code># write_rds(forecast, &quot;forecast.rds&quot;)
-
-forecast &lt;- read_rds(here::here(&quot;data_files/forecast.rds&quot;))
-
-forecast</code></pre>
+<p><img src="df_forecast.png" width="894" /></p>
 </div>
 <div id="plotting" class="section level3">
 <h3>Plotting</h3>
@@ -114,7 +108,7 @@ forecast</code></pre>
 <pre class="r"><code>FOP_dyplot &lt;- dyplot.prophet(df_m, forecast)
 
 FOP_dyplot</code></pre>
-<p><img src="fig01_forecast_plot.png" width="567" /></p>
+<p><img src="fig01_forecast_plot.png" width="1182" /></p>
 </div>
 <div id="plotting-the-components" class="section level3">
 <h3>Plotting the components</h3>
@@ -133,6 +127,6 @@ The hourly level data suggests that getting to Animal Kingdom right when it open
 </div>
 <div id="tldr" class="section level3">
 <h3>TL;DR</h3>
-<p>It appears the best time to ride Avatar Flight of Passage is right when the park opens on a Wednesday in September! If you can’t manage to go to Disney’s Animal Kingdom, you can still enjoy the beautiful scenery of the World of Pandora while you wait!
+<p>It appears the best time to ride Avatar Flight of Passage is right when the park opens on a Wednesday in September! If you can’t manage to go to Disney’s Animal Kingdom during this time, you can still enjoy the beautiful scenery of the World of Pandora while you wait!
 <img src="featured2.jpeg" width="645" /></p>
 </div>
