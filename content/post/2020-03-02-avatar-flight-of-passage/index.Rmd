@@ -175,11 +175,14 @@ Yearly data suggests the best time to ride the ride in September which seems to 
 ```{r echo = FALSE}
 knitr::include_graphics("fig04_yearly_plot.png", dpi = 600)
 ```
-The hourly level data suggests that getting to Animal Kingdom right when it opens and just before the parks close seem to be the best time to queue up for the ride.
+The hourly level data suggests that getting to Animal Kingdom right when it opens and just before the parks close seem to be the best time to queue up for the ride.  
+
 ```{r echo = FALSE}
 knitr::include_graphics("fig05_daily_plot.png", dpi = 600)
 ```
+   
 ### TL;DR  
+
 
 It appears the best time to ride Avatar Flight of Passage is right when the park opens on a Wednesday in September!  If you can't manage to go to Disney's Animal Kingdom, you can still enjoy the beautiful scenery of the World of Pandora while you wait!
 ```{r echo = FALSE}
