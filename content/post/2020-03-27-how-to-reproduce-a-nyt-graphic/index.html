@@ -1,0 +1,182 @@
+---
+title: How to reproduce a NYT graphic
+author: Sean Nguyen
+date: '2020-03-27'
+slug: how-to-reproduce-a-nyt-graphic
+categories:
+  - Economics
+  - R
+  - Visualization
+tags:
+  - Data Visualization
+  - NYT
+  - ggplot
+subtitle: ''
+summary: ''
+authors: []
+featured: yes
+image:
+  caption: NYT front page
+  focal_point: Center
+  placement: 2
+  preview_only: yes
+--- 
+
+
+
+<p>Today the New York Times published the striking figure of US unemployment claims in light of the recent COVID-19 pandemic. I’ve always been a strong proponent distilling the essence of what I’m trying to convey in my research especially when I generate plots and <a href="https://ggplot2.tidyverse.org/">ggplot</a> allows me to do just that. When I run workshops I always mention how you can plot nearly anything with gpgplot. Let’s see if we can put my claim to the test and recreate this incredible plot of the number of unemploytment claims.</p>
+<p><img src="NYT_front.jpg" width="576" /></p>
+<div id="nyt-graphics" class="section level2">
+<h2>NYT graphics</h2>
+<p>I’ve always been impressed with the high quality graphics and visualizations since NYT debut of <a href="https://www.nytimes.com/section/upshot">The Upshot</a> in 2014. Perhaps the most infamous graphic was the 2016 presdiential election forecast needle.</p>
+<p><img src="up-needle-image.png" /></p>
+<p>Some people definitely have strong feelings when the see the needle for election cycles but I still think it’s a great thing for the general populace to understanding data and uncertainty.</p>
+<p><img src="https://media.giphy.com/media/2YoRN2MrRKNTzg7LJb/giphy.gif" /></p>
+{{% tweet "940771937613164545" %}}
+{{% tweet "973721512619462656" %}}
+<p>Regardless of your feelings about the NYT election forecast needle I want to highlight the incredible visualizations that they produce to help readers understand complex information. This blog post was inspired by <a href="https://twitter.com/andrewheiss/status/1243217997436801026">Andrew Heiss</a> and today’s front page graphic. Let’s see if we can reproduce the same graphic with ggplot.</p>
+</div>
+<div id="getting-the-data" class="section level2">
+<h2>Getting the data</h2>
+<p>We can use the <a href="https://github.com/business-science/tidyquant">tidyquant package</a> to get the ICSA (Initial claims, seasonally adjusted) economic data from the most recent unemployment claims since the onset of the Coronavirus pandemic. We can use <code>tq_get()</code> to select the data that we want starting from 1967.</p>
+<pre class="r"><code>library(tidyverse)
+library(tidyquant) 
+library(lubridate)
+library(scales) 
+
+
+data_raw &lt;- tq_get(&quot;ICSA&quot;,
+                   get = &quot;economic.data&quot;,  
+                   from = &quot;1967-01-07&quot;) 
+
+data_raw</code></pre>
+<pre><code>## # A tibble: 2,777 x 3
+##    symbol date        price
+##    &lt;chr&gt;  &lt;date&gt;      &lt;int&gt;
+##  1 ICSA   1967-01-07 208000
+##  2 ICSA   1967-01-14 207000
+##  3 ICSA   1967-01-21 217000
+##  4 ICSA   1967-01-28 204000
+##  5 ICSA   1967-02-04 216000
+##  6 ICSA   1967-02-11 229000
+##  7 ICSA   1967-02-18 229000
+##  8 ICSA   1967-02-25 242000
+##  9 ICSA   1967-03-04 310000
+## 10 ICSA   1967-03-11 241000
+## # … with 2,767 more rows</code></pre>
+</div>
+<div id="data-wrangling" class="section level2">
+<h2>Data wrangling</h2>
+<p>We can then get the ICSA data and filter from 2000 and later. Then we can rename the price to something that makes more sense like <code>claim_no</code>.</p>
+<pre class="r"><code>claims_no &lt;- data_raw %&gt;% 
+  filter(symbol == &quot;ICSA&quot; &amp;
+           date &gt;= &quot;2000-01-01&quot;) %&gt;% 
+  rename(claim_no = price)
+
+claims_no</code></pre>
+<pre><code>## # A tibble: 1,056 x 3
+##    symbol date       claim_no
+##    &lt;chr&gt;  &lt;date&gt;        &lt;int&gt;
+##  1 ICSA   2000-01-01   286000
+##  2 ICSA   2000-01-08   298000
+##  3 ICSA   2000-01-15   289000
+##  4 ICSA   2000-01-22   284000
+##  5 ICSA   2000-01-29   285000
+##  6 ICSA   2000-02-05   312000
+##  7 ICSA   2000-02-12   300000
+##  8 ICSA   2000-02-19   283000
+##  9 ICSA   2000-02-26   280000
+## 10 ICSA   2000-03-04   286000
+## # … with 1,046 more rows</code></pre>
+</div>
+<div id="generating-the-plot" class="section level2">
+<h2>Generating the plot</h2>
+<p>I’m going to take you step by step how I recreated the plot so we can see how can add features as we see fit.</p>
+<pre class="r"><code>NYT_plot &lt;- claims_no %&gt;% 
+  ggplot(aes(x = date, y = claim_no)) +
+  geom_col(fill = &quot;#F4B066&quot;) 
+
+NYT_plot</code></pre>
+<p><img src="/post/2020-03-27-how-to-reproduce-a-nyt-graphic/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="adding-lines-and-text" class="section level2">
+<h2>Adding lines and text</h2>
+<p>We can add text to the plot with the <code>annotate()</code> function and create a horizontal dotted line with <code>geom_hline()</code>.</p>
+<pre class="r"><code>NYT_plot &lt;- NYT_plot +
+  annotate(&quot;text&quot;, x = as.Date(&quot;2008-01-01&quot;), y = 6E5, 
+           label = &quot;2008\nRECESSION&quot;, size = 1.4, hjust = 0 ) +
+  geom_hline(yintercept=c(345000), linetype=&quot;dotted&quot;) +
+  annotate(&quot;text&quot;, x = as.Date(&quot;2017-01-01&quot;), y = 3.85E5, 
+           label = &quot;WEEKLY AVERAGE: 345,000&quot;, size = 2) 
+
+NYT_plot</code></pre>
+<p><img src="/post/2020-03-27-how-to-reproduce-a-nyt-graphic/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="adding-accents" class="section level2">
+<h2>Adding accents</h2>
+<p>We can create a separate column that is a little bit thicker than the rest of the data by using <code>geom_segment()</code> as well as highlight the 2008 recession by using <code>annotate()</code> and <code>&quot;rect&quot;</code> to highlight the timespan of the 2008 recession.</p>
+<pre class="r"><code>NYT_plot &lt;- NYT_plot +
+  geom_segment(aes(x = as.Date(&quot;2020-03-21&quot;), xend = as.Date(&quot;2020-03-21&quot;),
+                   y =  0, yend = 3283000),color = &quot;#F4B066&quot;) +
+  annotate(&quot;rect&quot;, xmin = as.Date(&quot;2008-01-01&quot;), xmax = as.Date(&quot;2009-07-01&quot;),
+           ymin = 0, ymax = 7E5,
+  alpha = .2)
+
+NYT_plot</code></pre>
+<p><img src="/post/2020-03-27-how-to-reproduce-a-nyt-graphic/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div id="switching-the-axis-and-adjusting-labels" class="section level3">
+<h3>Switching the axis and adjusting labels</h3>
+<p>Next we can move the y-axis to the right side and make the x-axis drop <code>20</code> and clean it up with <code>theme_bw()</code>. We can also add a caption of the source data in the <code>labs()</code> argument.</p>
+<pre class="r"><code>NYT_plot &lt;- NYT_plot +
+  scale_y_continuous(position = &quot;right&quot;,
+                     labels = comma,
+                     limits = c(0, 3.5E6),
+                     breaks = seq(0,3E6, 5E5),
+                     expand = c(0, 0)) +
+  scale_x_date(date_labels = &quot;\&#39;%y&quot;, date_breaks = &quot;1 year&quot;) +
+  labs(x = &quot;&quot;, y = &quot;&quot;,
+       caption = &quot;Source: Initial weekly unemployment claims (ICSA))&quot;) +
+  theme_bw()
+
+NYT_plot</code></pre>
+<p><img src="/post/2020-03-27-how-to-reproduce-a-nyt-graphic/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+</div>
+<div id="putting-it-all-together" class="section level2">
+<h2>Putting it all together</h2>
+<p>Here’s the finalized code of all the things in one code chunk. It’really nice to be able get the same data as the NYT and harvest, clean, and plot the data all in R. Obviously things can look nicer when you port things in different tools such as D3.js and illustrator but my point was to highlight the power of using open source software to achieve great results!</p>
+<pre class="r"><code>NYT_plot &lt;- claims_no %&gt;% 
+  ggplot(aes(x = date, y = claim_no)) +
+  geom_col(fill = &quot;#F4B066&quot;) +
+  annotate(&quot;text&quot;, x = as.Date(&quot;2008-01-01&quot;), y = 6E5, 
+           label = &quot;2008\nRECESSION&quot;, size = 1.4, hjust = 0 ) +
+  geom_hline(yintercept=c(345000), linetype=&quot;dotted&quot;) +
+  annotate(&quot;text&quot;, x = as.Date(&quot;2017-01-01&quot;), y = 3.85E5, 
+           label = &quot;WEEKLY AVERAGE: 345,000&quot;, size = 2) +
+  geom_segment(aes(x = as.Date(&quot;2020-03-21&quot;), xend = as.Date(&quot;2020-03-21&quot;),
+                   y =  0, yend = 3283000),color = &quot;#F4B066&quot;) +
+  annotate(&quot;rect&quot;, xmin = as.Date(&quot;2008-01-01&quot;), xmax = as.Date(&quot;2009-07-01&quot;),
+           ymin = 0, ymax = 7E5,
+  alpha = .2) +
+  scale_y_continuous(position = &quot;right&quot;,
+                     labels = comma,
+                     limits = c(0, 3.5E6),
+                     breaks = seq(0,3E6, 5E5),
+                     expand = c(0, 0)) +
+  scale_x_date(date_labels = &quot;\&#39;%y&quot;, date_breaks = &quot;1 year&quot;) +
+  labs(x = &quot;&quot;, y = &quot;&quot;,
+       caption = &quot;Source: Initial weekly unemployment claims (ICSA))&quot;) +
+  theme_bw()
+
+NYT_plot</code></pre>
+<p><img src="/post/2020-03-27-how-to-reproduce-a-nyt-graphic/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code># ggsave(plot = NYT_plot, &quot;NYT_plot.png&quot;, 
+#        height = 8, width = 6, units = &quot;in&quot;, dpi = 600)</code></pre>
+</div>
+<div id="tldr" class="section level2">
+<h2>TL;DR</h2>
+<p>We can recreate plots like the NYT graphics team using ggplot!</p>
+<p><img src="NYT_ggplot_comparison.png" /></p>
+<p>Make sure you stay safe, wash your hands and stay home during this COVID-19 pandemic!
+<img src="https://media.giphy.com/media/efsGWPHNt1e7K5IFmR/giphy.gif" /></p>
+</div>
