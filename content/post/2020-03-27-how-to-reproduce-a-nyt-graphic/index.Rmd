@@ -22,14 +22,14 @@ image:
   preview_only: yes
 --- 
 
-Today the New York Times published the striking figure of US unemployment claims in light of the recent COVID-19 pandemic.  I've always been a strong proponent distilling the essence of what I'm trying to convey in my research especially when I generate plots and [ggplot](https://ggplot2.tidyverse.org/) allows me to do just that. When I run workshops I always mention how you can plot nearly anything with gpgplot. Let's see if we can put my claim to the test and recreate this incredible plot of the number of unemploytment claims. 
+Today the New York Times published the striking figure of US unemployment claims in light of the recent COVID-19 pandemic.  I've always been a strong proponent distilling the essence of what I'm trying to convey in my research especially when I generate plots and [ggplot](https://ggplot2.tidyverse.org/) allows me to do just that. When I run workshops I always mention how you can plot nearly anything with ggplot. Let's see if we can put my claim to the test and recreate this incredible plot of the number of unemployment claims. 
 
 ```{r echo = FALSE, fig.width = 10}
 knitr::include_graphics("NYT_front.jpg", dpi = 600)
 ```
 
 ## NYT graphics
-I've always been impressed with the high quality graphics and visualizations since NYT debut of [The Upshot](https://www.nytimes.com/section/upshot) in 2014.  Perhaps the most infamous graphic was the 2016 presdiential election forecast needle. 
+I've always been impressed with the high quality graphics and visualizations since NYT debut of [The Upshot](https://www.nytimes.com/section/upshot) in 2014.  Perhaps the most infamous graphic was the 2016 presidential election forecast needle. 
 
 ![](up-needle-image.png)
 
@@ -82,7 +82,7 @@ claims_no
 
 
 ## Generating the plot
-I'm going to take you step by step how I recreated the plot so we can see how can add features as we see fit.
+I'm going to take you step by step how I recreated the plot so we can see how we can add features with each line of code.
 ```{r message=FALSE, warning=FALSE}
 
 NYT_plot <- claims_no %>% 
@@ -109,7 +109,7 @@ NYT_plot
 ```
 
 ## Adding accents
-We can create a separate column that is a little bit thicker than the rest of the data by using `geom_segment()` as well as highlight the 2008 recession by using `annotate()` and  `"rect"` to highlight the timespan of the 2008 recession.
+We can create a separate column that is a little bit thicker than the rest of the data by using `geom_segment()` as well as highlight the 2008 recession by using `annotate()` and  `"rect"` to highlight the time span of the 2008 recession.
 
 ```{r message=FALSE, warning=FALSE}
 NYT_plot <- NYT_plot +
@@ -141,7 +141,7 @@ NYT_plot
 ```
 
 ## Putting it all together
-Here's the finalized code of all the things in one code chunk.  It'really nice to be able get the same data as the NYT and harvest, clean, and plot the data all in R.  Obviously things can look nicer when you port things in different tools such as D3.js and illustrator but my point was to highlight the power of using open source software to achieve great results!
+Here's the finalized code of all the things in one code chunk.  It's really nice to be able get the same data as the NYT and harvest, clean, and plot the data all in R.  Obviously things look nicer when you port things in different tools such as D3.js, photoshop, and illustrator but my point was to highlight the power of using open source software to achieve great results!
 ```{r message=FALSE, warning=FALSE}
 
 NYT_plot <- claims_no %>% 
@@ -178,7 +178,7 @@ We can recreate plots like the NYT graphics team using ggplot!
 
 ![](NYT_ggplot_comparison.png)
 
-Make sure you stay safe, wash your hands and stay home during this COVID-19 pandemic!
+Make sure you stay safe, wash your hands, and stay home during this COVID-19 pandemic!
 ![](https://media.giphy.com/media/efsGWPHNt1e7K5IFmR/giphy.gif)
 
 
