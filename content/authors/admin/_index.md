@@ -10,12 +10,12 @@ authors:
 superuser: true
 
 # Role/position
-role: PhD Candidate
+role: Incoming Data Science Fellow
 
 # Organizations/Affiliations
 organizations:
-- name: Michigan State University
-  url: ""
+- name: Insight Data Science
+  url: "https://insightfellows.com/data-science"
 
 # Short bio (displayed in user profile at end of posts)
 bio: 
@@ -71,7 +71,7 @@ user_groups:
 - Visitors
 ---
 
-I’m a graduate student in the Petroff lab at MSU and the author/maintainer of the open source [tidyNano package](https://nguyens7.github.io/tidyNano/).  I provide all the code and data to all my blogposts where I explore interesting datasets using a variety of different tools. When I’m not in the lab, I enjoy cooking, photography, and reading. #rstats 📈♟️🥘   
+I’m an incoming data science fellow with Insight Data Science.  I love working with data and am the author/maintainer of the open source [tidyNano package](https://nguyens7.github.io/tidyNano/). In my free time I enjoy cooking, photography, and reading. #rstats #pydata 📈♟️🥘   
 
   
 This site was made with [blogdown](https://bookdown.org/yihui/blogdown/) and [Hugo](https://gohugo.io/),  and  deployed with [Netlify](https://www.netlify.com/). All the data and code for this site is available on [Github](https://github.com/nguyens7/website).  If you find my blog useful, [you can buy me a ☕️ on Ko-fi.](https://ko-fi.com/O4O71BDFZ)

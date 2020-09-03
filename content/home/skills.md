@@ -23,18 +23,17 @@ subtitle = ""
   description = ""  
 
 [[feature]]
+  icon = "brain"
+  icon_pack = "fas"
+  name = "Machine Learning"
+  description = ""
+
+[[feature]]
   icon = "flask"
   icon_pack = "fas"
   name = "Experimentation"
   description = ""  
-
-[[feature]]
-  icon = "chart-bar"
-  icon_pack = "fas"
-  name = "Visualization"
-  description = "" 
   
-
 [[feature]]
   icon = "python"
   icon_pack = "fab"
@@ -46,12 +45,14 @@ subtitle = ""
   icon_pack = "fab"
   name = "R"
   description = ""
-
+  
 
 [[feature]]
-  icon = "swift"
-  icon_pack = "fab"
-  name = "Swift"
-  description = ""
+  icon = "chart-bar"
+  icon_pack = "fas"
+  name = "Visualization"
+  description = "" 
+
+
 
 +++
